@@ -1,0 +1,13 @@
+diff --git a/node_modules/@expo/ui/ios/Button/Button.swift b/node_modules/@expo/ui/ios/Button/Button.swift
+index ebe5aaa..031c0e9 100644
+--- a/node_modules/@expo/ui/ios/Button/Button.swift
++++ b/node_modules/@expo/ui/ios/Button/Button.swift
+@@ -60,7 +60,7 @@ struct Button: ExpoSwiftUI.View {
+     })
+     #endif
+ 
+-    if #available(iOS 26.0, *) {
++    if #available(iOS 26.0, tvOS 26.0, *) {
+       #if compiler(>=6.2) // Xcode 26
+       switch props.variant {
+       case .glass:
