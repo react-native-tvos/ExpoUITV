@@ -46,6 +46,14 @@ export default function ButtonScreen() {
           <Button style={styles.button} variant="plain">
             Plain
           </Button>
+          {Platform.isTV && (
+            <Button variant="card">
+              <VStack spacing={8}>
+                <Image systemName="folder" size={100} />
+                <Text>Card (tvOS)</Text>
+              </VStack>
+            </Button>
+          )}
         </Section>
         <Section title="Disabled">
           <Button style={styles.button} disabled>
@@ -127,6 +135,10 @@ const styles = StyleSheet.create({
     margin: 5,
     marginLeft: 20,
     overflow: 'visible',
+  },
+  card: {
+    width: 900,
+    height: 100,
   },
   buttonHost: {
     width: Platform.isTV ? 400 : 50,
