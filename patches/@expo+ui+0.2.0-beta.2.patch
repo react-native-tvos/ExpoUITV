@@ -1,8 +1,20 @@
 diff --git a/node_modules/@expo/ui/ios/Button/Button.swift b/node_modules/@expo/ui/ios/Button/Button.swift
-index ebe5aaa..031c0e9 100644
+index ebe5aaa..6a2b6e9 100644
 --- a/node_modules/@expo/ui/ios/Button/Button.swift
 +++ b/node_modules/@expo/ui/ios/Button/Button.swift
-@@ -60,7 +60,7 @@ struct Button: ExpoSwiftUI.View {
+@@ -44,6 +44,11 @@ struct Button: ExpoSwiftUI.View {
+       $0.buttonStyle(.borderless)
+     })
+     #endif
++    #if os(tvOS)
++    .if(props.variant == .card, {
++      $0.buttonStyle(.card)
++    })
++    #endif
+ 
+     #if os(macOS)
+     .if(props.variant == .accessoryBar, {
+@@ -60,7 +65,7 @@ struct Button: ExpoSwiftUI.View {
      })
      #endif
  
