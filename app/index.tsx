@@ -64,6 +64,11 @@ export default function HomeScreen() {
       )}
       {Platform.OS === 'ios' && (
         <ThemedView>
+          <DemoButton demoName="GlassEffectScreen" />
+        </ThemedView>
+      )}
+      {Platform.OS === 'ios' && (
+        <ThemedView>
           <DemoButton demoName="HostingRNViewsScreen" />
         </ThemedView>
       )}
