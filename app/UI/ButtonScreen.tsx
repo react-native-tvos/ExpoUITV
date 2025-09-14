@@ -16,6 +16,7 @@ import {
 } from 'react-native';
 
 import { Page, Section } from '@/components/Page';
+import { glassEffect, padding } from '@expo/ui/swift-ui/modifiers';
 
 export default function ButtonScreen() {
   return (
@@ -31,7 +32,13 @@ export default function ButtonScreen() {
           <Button style={styles.button} variant="glass">
             Glass button
           </Button>
-          <Button style={styles.button} variant="glassProminent">
+          <Button
+            style={styles.button}
+            variant="glassProminent"
+            modifiers={[
+              glassEffect({ glass: { variant: 'clear', interactive: true } }),
+            ]}
+          >
             Glass Prominent
           </Button>
           <Button style={styles.button} variant="bordered">
@@ -47,7 +54,21 @@ export default function ButtonScreen() {
             Plain
           </Button>
           {Platform.isTV && (
-            <Button variant="card">
+            <Button
+              variant="card"
+              modifiers={[
+                padding({
+                  all: 32,
+                }),
+                glassEffect({
+                  glass: {
+                    variant: 'identity',
+                    interactive: true,
+                  },
+                  shape: 'rectangle',
+                }),
+              ]}
+            >
               <VStack spacing={8}>
                 <Image systemName="folder" size={100} />
                 <Text>Card (tvOS)</Text>
