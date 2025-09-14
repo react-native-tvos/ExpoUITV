@@ -160,11 +160,12 @@ export default function GlassEffect() {
                 glassEffect({
                   glass: {
                     variant: 'clear',
+                    tint: '#764ba2',
                   },
                 }),
               ]}
             >
-              <Text color="#fff">Show More Tools</Text>
+              <Text color="#000">Show Extra Tools</Text>
             </Button>
             <Button
               onPress={() => setIsGlassExpanded(false)}
@@ -174,12 +175,13 @@ export default function GlassEffect() {
                 cornerRadius(25),
                 glassEffect({
                   glass: {
-                    variant: 'regular',
+                    variant: 'clear',
+                    tint: '#000000',
                   },
                 }),
               ]}
             >
-              <Text color="#fff">Hide Tools</Text>
+              <Text color="#000">Hide Extra Tools</Text>
             </Button>
           </VStack>
         </VStack>
