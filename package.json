@@ -34,7 +34,7 @@
     "expo-web-browser": "~55.0.5",
     "react": "19.2.0",
     "react-dom": "19.2.0",
-    "react-native": "npm:react-native-tvos@0.81.4-0",
+    "react-native": "npm:react-native-tvos@0.83-stable",
     "react-native-gesture-handler": "~2.30.0",
     "react-native-reanimated": "~4.2.1",
     "react-native-safe-area-context": "~5.6.2",
@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
-    "@react-native-tvos/config-tv": "^0.1.4",
+    "@react-native-tvos/config-tv": "^0.1.5",
     "@types/react": "~19.2.2",
     "patch-package": "^8.0.0",
     "postinstall-postinstall": "^2.1.0",
