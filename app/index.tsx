@@ -1,10 +1,13 @@
 import { Image, StyleSheet, Platform, Pressable } from 'react-native';
+import { Href, Link } from 'expo-router';
 
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { useScale } from '@/hooks/useScale';
-import { useRouter } from 'expo-router';
+import { screenList } from '@/constants/ScreenList';
+
+const platform = Platform.OS as string;
 
 export default function HomeScreen() {
   const styles = useHomeScreenStyles();
@@ -21,107 +24,33 @@ export default function HomeScreen() {
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">Expo UI demos</ThemedText>
       </ThemedView>
-      {Platform.OS === 'android' && (
-        <ThemedView>
-          <DemoButton demoName="AlertDialogScreen" />
-        </ThemedView>
+      {screenList.map((screen) =>
+        screen.platforms.has(platform) &&
+        !(Platform.isTV && screen.excludedOnTV) ? (
+          <ThemedView key={screen.name}>
+            <DemoButton demoName={screen.name} />
+          </ThemedView>
+        ) : null,
       )}
-      {Platform.OS === 'ios' && !Platform.isTV && (
-        <ThemedView>
-          <DemoButton demoName="BottomSheetScreen" />
-        </ThemedView>
-      )}
-      <ThemedView>
-        <DemoButton demoName="ButtonScreen" />
-      </ThemedView>
-      {Platform.OS === 'ios' && (
-        <ThemedView>
-          <DemoButton demoName="ChartScreen" />
-        </ThemedView>
-      )}
-      {Platform.OS === 'ios' && !Platform.isTV && (
-        <ThemedView>
-          <DemoButton demoName="ColorPickerScreen" />
-        </ThemedView>
-      )}
-      {Platform.OS === 'ios' && (
-        <ThemedView>
-          <DemoButton demoName="ContextMenuScreen" />
-        </ThemedView>
-      )}
-      <ThemedView>
-        <DemoButton demoName="DateTimePickerScreen" />
-      </ThemedView>
-      {Platform.OS === 'ios' && (
-        <ThemedView>
-          <DemoButton demoName="FormScreen" />
-        </ThemedView>
-      )}
-      {Platform.OS === 'ios' && !Platform.isTV && (
-        <ThemedView>
-          <DemoButton demoName="GaugeScreen" />
-        </ThemedView>
-      )}
-      {Platform.OS === 'ios' && (
-        <ThemedView>
-          <DemoButton demoName="GlassEffectScreen" />
-        </ThemedView>
-      )}
-      {Platform.OS === 'ios' && (
-        <ThemedView>
-          <DemoButton demoName="HostingRNViewsScreen" />
-        </ThemedView>
-      )}
-      {Platform.OS === 'ios' && (
-        <ThemedView>
-          <DemoButton demoName="ListScreen" />
-        </ThemedView>
-      )}
-      {Platform.OS === 'ios' && (
-        <ThemedView>
-          <DemoButton demoName="ModifiersScreen" />
-        </ThemedView>
-      )}
-      <ThemedView>
-        <DemoButton demoName="PickerScreen" />
-      </ThemedView>
-      <ThemedView>
-        <DemoButton demoName="ProgressScreen" />
-      </ThemedView>
-      {Platform.OS === 'android' && (
-        <ThemedView>
-          <DemoButton demoName="ShapeScreen" />
-        </ThemedView>
-      )}
-      {Platform.OS === 'ios' && (
-        <ThemedView>
-          <DemoButton demoName="ShareLinkScreen" />
-        </ThemedView>
-      )}
-      <ThemedView>
-        <DemoButton demoName="SliderScreen" />
-      </ThemedView>
-      <ThemedView>
-        <DemoButton demoName="SwitchScreen" />
-      </ThemedView>
-      <ThemedView>
-        <DemoButton demoName="TextInputScreen" />
-      </ThemedView>
     </ParallaxScrollView>
   );
 }
 
 const DemoButton = function ({ demoName }: { demoName: string }) {
-  const router = useRouter();
   return (
-    <Pressable
-      style={({ pressed, focused }) => ({
-        opacity: pressed || focused ? 0.6 : 1.0,
-      })}
-      onPress={() => router.push(`/UI/${demoName}` as any)}
-    >
-      <ThemedText type="subtitle">{demoName}</ThemedText>
-    </Pressable>
+    <Link href={`/UI/${demoName}` as Href} asChild>
+      <Pressable>
+        {({ pressed, focused }) => (
+          <ThemedView
+            style={{
+              opacity: pressed || focused ? 0.6 : 1.0,
+            }}
+          >
+            <ThemedText type="subtitle">{demoName}</ThemedText>
+          </ThemedView>
+        )}
+      </Pressable>
+    </Link>
   );
 };
 

@@ -11,14 +11,15 @@ import {
   configureReanimatedLogger,
   ReanimatedLogLevel,
 } from 'react-native-reanimated';
+import { Platform } from 'react-native';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { TVEventControl } from 'react-native';
+import { screenList } from '@/constants/ScreenList';
+
+const platform = Platform.OS;
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
-
-TVEventControl.enableTVMenuKey();
 
 // Disable reanimated warnings
 configureReanimatedLogger({
@@ -52,6 +53,7 @@ export default function RootLayout() {
           name="index"
           options={{ headerShown: false, title: 'Expo UI' }}
         />
+        <Stack.Screen name="UI" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>
     </ThemeProvider>
