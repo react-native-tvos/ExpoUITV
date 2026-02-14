@@ -1,16 +1,35 @@
-import { Image, StyleSheet, Platform, Pressable } from 'react-native';
-import { Href, Link } from 'expo-router';
+import {
+  Image,
+  StyleSheet,
+  Platform,
+  Pressable,
+  TVEventControl,
+} from 'react-native';
+import {
+  Href,
+  Link,
+  RelativePathString,
+  useFocusEffect,
+  useRouter,
+} from 'expo-router';
 
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { useScale } from '@/hooks/useScale';
 import { screenList } from '@/constants/ScreenList';
+import { useCallback } from 'react';
 
 const platform = Platform.OS as string;
 
 export default function HomeScreen() {
+  useFocusEffect(
+    useCallback(() => {
+      TVEventControl.disableTVMenuKey();
+    }, []),
+  );
   const styles = useHomeScreenStyles();
+
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
@@ -28,7 +47,7 @@ export default function HomeScreen() {
         screen.platforms.has(platform) &&
         !(Platform.isTV && screen.excludedOnTV) ? (
           <ThemedView key={screen.name}>
-            <DemoButton demoName={screen.name} />
+            <DemoButton demoName={screen.name as RelativePathString} />
           </ThemedView>
         ) : null,
       )}
@@ -36,21 +55,24 @@ export default function HomeScreen() {
   );
 }
 
-const DemoButton = function ({ demoName }: { demoName: string }) {
+const DemoButton = function ({ demoName }: { demoName: RelativePathString }) {
+  const router = useRouter();
+  const navigate = (screen: RelativePathString) => {
+    TVEventControl.enableTVMenuKey();
+    router.push(screen);
+  };
   return (
-    <Link href={demoName as Href} asChild>
-      <Pressable>
-        {({ pressed, focused }) => (
-          <ThemedView
-            style={{
-              opacity: pressed || focused ? 0.6 : 1.0,
-            }}
-          >
-            <ThemedText type="subtitle">{demoName}</ThemedText>
-          </ThemedView>
-        )}
-      </Pressable>
-    </Link>
+    <Pressable onPress={() => navigate(demoName)}>
+      {({ pressed, focused }) => (
+        <ThemedView
+          style={{
+            opacity: pressed || focused ? 0.6 : 1.0,
+          }}
+        >
+          <ThemedText type="subtitle">{demoName}</ThemedText>
+        </ThemedView>
+      )}
+    </Pressable>
   );
 };
 

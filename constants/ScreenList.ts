@@ -25,8 +25,8 @@ export const screenList: {
   { name: 'PickerScreen', platforms: allPlatforms },
   { name: 'ProgressScreen', platforms: allPlatforms },
   { name: 'ShapeScreen', platforms: androidOnly },
-  { name: 'ShareLinkScreen', platforms: iosOnly },
-  { name: 'SliderScreen', platforms: allPlatforms, excludedOnTV: true },
+  { name: 'ShareLinkScreen', platforms: iosOnly, excludedOnTV: true },
+  { name: 'SliderScreen', platforms: allPlatforms },
   { name: 'SwitchScreen', platforms: androidOnly },
   { name: 'TextInputScreen', platforms: allPlatforms },
 ];

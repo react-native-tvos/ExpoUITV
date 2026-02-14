@@ -10,11 +10,27 @@ import { ScrollView, StyleSheet, Text, View, Image } from 'react-native';
 import { Page, Section } from '@/components/Page';
 
 export default function ShareLinkScreen() {
-  const [assets] = useAssets([require('@/assets/images/react-logo.png')]);
+  const [assets] = useAssets([require('@/assets/images/example1.jpg')]);
 
   return (
     <Page>
       <ScrollView showsVerticalScrollIndicator={false}>
+        <Section title="Async URL Loading">
+          <ShareLink
+            getItemAsync={async () => {
+              await new Promise((resolve) => setTimeout(resolve, 1000));
+              return `https://docs.expo.dev/versions/latest/sdk/ui?q=${Math.random()}`;
+            }}
+            subject="Expo UI docs"
+            preview={{
+              title: 'Expo UI docs',
+              image:
+                'https://pbs.twimg.com/profile_images/1940486720190820352/7gl2X1b2_400x400.jpg',
+            }}
+          >
+            <Label title="Async Share" systemImage="clock" />
+          </ShareLink>
+        </Section>
         <Section title="Default">
           <ShareLink item="https://docs.expo.dev/versions/latest/sdk/ui/" />
         </Section>
