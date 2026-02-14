@@ -1,4 +1,5 @@
-import { Shape } from '@expo/ui/jetpack-compose';
+import { Host, Shape, Row } from '@expo/ui/jetpack-compose';
+import { rotate, size } from '@expo/ui/jetpack-compose/modifiers';
 import { useEffect } from 'react';
 import { View } from 'react-native';
 import Animated, {
@@ -9,7 +10,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
-import { Page } from '@/components/Page';
+import { Page } from '../../components/Page';
 
 const AnimatedPolygon = Animated.createAnimatedComponent(Shape.Polygon);
 const AnimatedRectangle = Animated.createAnimatedComponent(Shape.Rectangle);
@@ -37,7 +38,7 @@ export default function UIScreen() {
         true,
       ),
     );
-  }, [oneToZero]);
+  }, []);
 
   const zeroToPointTwo = useSharedValue<number | undefined>(1);
 
@@ -52,7 +53,7 @@ export default function UIScreen() {
         true,
       ),
     );
-  }, [zeroToPointTwo]);
+  }, []);
 
   const oneToPointEight = useSharedValue<number | undefined>(1);
 
@@ -67,7 +68,7 @@ export default function UIScreen() {
         true,
       ),
     );
-  }, [oneToPointEight]);
+  }, []);
 
   return (
     <Page>
@@ -78,53 +79,52 @@ export default function UIScreen() {
           flexWrap: 'wrap',
         }}
       >
-        <AnimatedPolygon
-          style={{ width: 180, height: 180 }}
-          smoothing={1}
-          cornerRounding={zeroToPointTwo}
-          verticesCount={3}
-          color={pastelPalette.color1}
-        />
-        <AnimatedStar
-          style={{ width: 180, height: 180 }}
-          innerRadius={oneToPointEight}
-          smoothing={1}
-          radius={1}
-          cornerRounding={0.1}
-          verticesCount={12}
-          color={pastelPalette.color2}
-        />
-        <View style={{ width: 180, height: 180, justifyContent: 'center' }}>
-          <Shape.PillStar
-            style={{ width: 180, height: 100 }}
-            radius={1}
-            innerRadius={0.7}
-            smoothing={1}
-            cornerRounding={0.05}
-            verticesCount={12}
-            color={pastelPalette.color3}
-          />
-        </View>
-
-        <AnimatedPolygon
-          style={{ width: 180, height: 180 }}
-          cornerRounding={zeroToPointTwo}
-          smoothing={1}
-          verticesCount={6}
-          color={pastelPalette.color4}
-        />
-        <View style={{ width: 180, height: 180, alignItems: 'center' }}>
-          <AnimatedRectangle
-            style={{
-              width: 100,
-              height: 180,
-              transform: [{ rotate: '45deg' }],
-            }}
-            smoothing={1}
-            cornerRounding={oneToZero}
-            color={pastelPalette.color5}
-          />
-        </View>
+        <Host style={{ width: 140 * 3, height: 140 }}>
+          <Row>
+            <AnimatedPolygon
+              modifiers={[size(140, 140)]}
+              smoothing={1}
+              cornerRounding={zeroToPointTwo}
+              verticesCount={3}
+              color={pastelPalette.color1}
+            />
+            <AnimatedStar
+              modifiers={[size(140, 140)]}
+              innerRadius={oneToPointEight}
+              smoothing={1}
+              radius={1}
+              cornerRounding={0.1}
+              verticesCount={12}
+              color={pastelPalette.color2}
+            />
+            <Shape.PillStar
+              modifiers={[size(140, 140)]}
+              radius={1}
+              innerRadius={0.7}
+              smoothing={1}
+              cornerRounding={0.05}
+              verticesCount={12}
+              color={pastelPalette.color3}
+            />
+          </Row>
+        </Host>
+        <Host style={{ width: 140 * 3, height: 140 }}>
+          <Row>
+            <AnimatedPolygon
+              modifiers={[size(140, 140)]}
+              cornerRounding={zeroToPointTwo}
+              smoothing={1}
+              verticesCount={6}
+              color={pastelPalette.color4}
+            />
+            <AnimatedRectangle
+              modifiers={[size(140, 140), rotate(45)]}
+              smoothing={1}
+              cornerRounding={oneToZero}
+              color={pastelPalette.color5}
+            />
+          </Row>
+        </Host>
       </View>
     </Page>
   );
