@@ -11,12 +11,8 @@ import {
   configureReanimatedLogger,
   ReanimatedLogLevel,
 } from 'react-native-reanimated';
-import { Platform } from 'react-native';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { screenList } from '@/constants/ScreenList';
-
-const platform = Platform.OS;
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();

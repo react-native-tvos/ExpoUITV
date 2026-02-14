@@ -39,18 +39,33 @@ export default function UIScreen() {
           <Button
             variant="borderless"
             leadingIcon="outlined.Delete"
-            elementColors={{ contentColor: '#FF6347' }}>
+            elementColors={{ contentColor: '#FF6347' }}
+          >
             Trash
           </Button>
-          <Button variant="outlined" leadingIcon="outlined.Favorite" trailingIcon="filled.Favorite">
+          <Button
+            variant="outlined"
+            leadingIcon="outlined.Favorite"
+            trailingIcon="filled.Favorite"
+          >
             Heart
           </Button>
         </Section>
         <Section title="Android Custom Colored Buttons">
-          <Button elementColors={{ containerColor: '#007BFF', contentColor: '#FF6347' }}>
+          <Button
+            elementColors={{
+              containerColor: '#007BFF',
+              contentColor: '#FF6347',
+            }}
+          >
             Blue
           </Button>
-          <Button elementColors={{ containerColor: '#FF6347', contentColor: '#007BFF' }}>
+          <Button
+            elementColors={{
+              containerColor: '#FF6347',
+              contentColor: '#007BFF',
+            }}
+          >
             Red
           </Button>
         </Section>
@@ -58,14 +73,16 @@ export default function UIScreen() {
           <Button color="#f00f0f">Red</Button>
         </Section>
         <Section title="interpolated strings">
-          <Button color="#FF6347">
-            {/* eslint-disable-next-line */}
-            Hello {'world'}
-          </Button>
+          <Button color="#FF6347">Hello {'world'}</Button>
         </Section>
         <Section title="Custom shapes">
           <Button
-            shape={Shape.PillStar({ innerRadius: 0.5, radius: 1, verticesCount: 20, smoothing: 1 })}
+            shape={Shape.PillStar({
+              innerRadius: 0.5,
+              radius: 1,
+              verticesCount: 20,
+              smoothing: 1,
+            })}
             leadingIcon="rounded.Check"
           />
         </Section>

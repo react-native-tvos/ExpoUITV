@@ -31,13 +31,13 @@ export default function UIScreen() {
       withRepeat(
         withSequence(
           withTiming(1, { duration: 1000, easing: Easing.cubic }),
-          withTiming(0, { duration: 1000, easing: Easing.cubic })
+          withTiming(0, { duration: 1000, easing: Easing.cubic }),
         ),
         -1,
-        true
-      )
+        true,
+      ),
     );
-  }, []);
+  }, [oneToZero]);
 
   const zeroToPointTwo = useSharedValue<number | undefined>(1);
 
@@ -46,13 +46,13 @@ export default function UIScreen() {
       withRepeat(
         withSequence(
           withTiming(0, { duration: 1000, easing: Easing.cubic }),
-          withTiming(0.2, { duration: 1000, easing: Easing.cubic })
+          withTiming(0.2, { duration: 1000, easing: Easing.cubic }),
         ),
         -1,
-        true
-      )
+        true,
+      ),
     );
-  }, []);
+  }, [zeroToPointTwo]);
 
   const oneToPointEight = useSharedValue<number | undefined>(1);
 
@@ -61,13 +61,13 @@ export default function UIScreen() {
       withRepeat(
         withSequence(
           withTiming(0.8, { duration: 1000, easing: Easing.cubic }),
-          withTiming(0.6, { duration: 1000, easing: Easing.cubic })
+          withTiming(0.6, { duration: 1000, easing: Easing.cubic }),
         ),
         -1,
-        true
-      )
+        true,
+      ),
     );
-  }, []);
+  }, [oneToPointEight]);
 
   return (
     <Page>
@@ -76,7 +76,8 @@ export default function UIScreen() {
           display: 'flex',
           flexDirection: 'row',
           flexWrap: 'wrap',
-        }}>
+        }}
+      >
         <AnimatedPolygon
           style={{ width: 180, height: 180 }}
           smoothing={1}
@@ -114,7 +115,11 @@ export default function UIScreen() {
         />
         <View style={{ width: 180, height: 180, alignItems: 'center' }}>
           <AnimatedRectangle
-            style={{ width: 100, height: 180, transform: [{ rotate: '45deg' }] }}
+            style={{
+              width: 100,
+              height: 180,
+              transform: [{ rotate: '45deg' }],
+            }}
             smoothing={1}
             cornerRounding={oneToZero}
             color={pastelPalette.color5}

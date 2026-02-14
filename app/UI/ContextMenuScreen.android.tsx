@@ -1,4 +1,10 @@
-import { Button, Switch, ContextMenu, Submenu, Host } from '@expo/ui/jetpack-compose';
+import {
+  Button,
+  Switch,
+  ContextMenu,
+  Submenu,
+  Host,
+} from '@expo/ui/jetpack-compose';
 // import { useVideoPlayer, VideoView } from 'expo-video';
 import * as React from 'react';
 import { View, /* StyleSheet, */ Text } from 'react-native';
@@ -12,7 +18,9 @@ export default function ContextMenuScreen() {
   // const [selectedIndex, setSelectedIndex] = React.useState<number | null>(1);
   const [switchChecked, setSwitchChecked] = React.useState<boolean>(true);
   const [switch2Checked, setSwitch2Checked] = React.useState<boolean>(true);
-  const [selectedTheme, setSelectedTheme] = React.useState<'Light' | 'Dark' | 'Auto'>('Auto');
+  const [selectedTheme, setSelectedTheme] = React.useState<
+    'Light' | 'Dark' | 'Auto'
+  >('Auto');
 
   const themeForegroundColor = selectedTheme === 'Dark' ? 'white' : 'black';
   const themeBackgroundColor = selectedTheme === 'Dark' ? 'black' : 'white';
@@ -26,14 +34,23 @@ export default function ContextMenuScreen() {
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Section title="Theme Context Menu">
         <View
-          style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
           <Text>Theme</Text>
           <Host matchContents>
             <ContextMenu color={themeBackgroundColor}>
               <ContextMenu.Trigger>
                 <Button
-                  elementColors={{ containerColor: 'transparent', contentColor: 'blue' }}
-                  trailingIcon="filled.ArrowDropDown">
+                  elementColors={{
+                    containerColor: 'transparent',
+                    contentColor: 'blue',
+                  }}
+                  trailingIcon="filled.ArrowDropDown"
+                >
                   {selectedTheme}
                 </Button>
               </ContextMenu.Trigger>
@@ -45,7 +62,10 @@ export default function ContextMenuScreen() {
                   }}
                   onPress={() => setSelectedTheme('Light')}
                   leadingIcon="filled.Star"
-                  trailingIcon={selectedTheme === 'Light' ? 'filled.Check' : undefined}>
+                  trailingIcon={
+                    selectedTheme === 'Light' ? 'filled.Check' : undefined
+                  }
+                >
                   Light
                 </Button>
                 <Button
@@ -55,7 +75,10 @@ export default function ContextMenuScreen() {
                   }}
                   onPress={() => setSelectedTheme('Dark')}
                   leadingIcon="filled.Face"
-                  trailingIcon={selectedTheme === 'Dark' ? 'filled.Check' : undefined}>
+                  trailingIcon={
+                    selectedTheme === 'Dark' ? 'filled.Check' : undefined
+                  }
+                >
                   Dark
                 </Button>
                 <Button
@@ -65,7 +88,10 @@ export default function ContextMenuScreen() {
                   }}
                   onPress={() => setSelectedTheme('Auto')}
                   leadingIcon="filled.Settings"
-                  trailingIcon={selectedTheme === 'Auto' ? 'filled.Check' : undefined}>
+                  trailingIcon={
+                    selectedTheme === 'Auto' ? 'filled.Check' : undefined
+                  }
+                >
                   Auto
                 </Button>
               </ContextMenu.Items>
@@ -80,14 +106,22 @@ export default function ContextMenuScreen() {
               <Button variant="bordered">Show Colorful Menu</Button>
             </ContextMenu.Trigger>
             <ContextMenu.Items>
-              <Button variant="bordered" color="#ff0000" leadingIcon="filled.Favorite">
-                I'm red!
+              <Button
+                variant="bordered"
+                color="#ff0000"
+                leadingIcon="filled.Favorite"
+              >
+                I am red
               </Button>
               <Button
                 variant="bordered"
-                elementColors={{ containerColor: '#0000ff', contentColor: '#00ff00' }}
+                elementColors={{
+                  containerColor: '#0000ff',
+                  contentColor: '#00ff00',
+                }}
                 leadingIcon="filled.Star"
-                trailingIcon="filled.Check">
+                trailingIcon="filled.Check"
+              >
                 My text is green!
               </Button>
               <Switch
@@ -124,21 +158,32 @@ export default function ContextMenuScreen() {
             <Button variant="outlined">Show Menu with Submenu</Button>
           </ContextMenu.Trigger>
           <ContextMenu.Items>
-            <Button leadingIcon="filled.Home" onPress={() => console.log('Home pressed')}>
+            <Button
+              leadingIcon="filled.Home"
+              onPress={() => console.log('Home pressed')}
+            >
               Home
             </Button>
             <Submenu
               button={
-                <Button leadingIcon="filled.Settings" trailingIcon="filled.ArrowForward">
+                <Button
+                  leadingIcon="filled.Settings"
+                  trailingIcon="filled.ArrowForward"
+                >
                   Settings
                 </Button>
-              }>
-              <Button leadingIcon="filled.Person" onPress={() => console.log('Profile pressed')}>
+              }
+            >
+              <Button
+                leadingIcon="filled.Person"
+                onPress={() => console.log('Profile pressed')}
+              >
                 Profile Settings
               </Button>
               <Button
                 leadingIcon="filled.Notifications"
-                onPress={() => console.log('Notifications pressed')}>
+                onPress={() => console.log('Notifications pressed')}
+              >
                 Notifications
               </Button>
               <Switch
@@ -148,7 +193,10 @@ export default function ContextMenuScreen() {
                 onValueChange={setSwitchChecked}
               />
             </Submenu>
-            <Button leadingIcon="filled.ExitToApp" onPress={() => console.log('Logout pressed')}>
+            <Button
+              leadingIcon="filled.ExitToApp"
+              onPress={() => console.log('Logout pressed')}
+            >
               Logout
             </Button>
           </ContextMenu.Items>
