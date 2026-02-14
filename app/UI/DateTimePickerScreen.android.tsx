@@ -2,11 +2,13 @@ import {
   DateTimePicker,
   DateTimePickerProps,
   Picker,
+  Column,
+  Host,
 } from '@expo/ui/jetpack-compose';
 import * as React from 'react';
-import { Platform, ScrollView, Text, View } from 'react-native';
+import { ScrollView, Text } from 'react-native';
 
-import { Page, Section } from '@/components/Page';
+import { Page, Section } from '../../components/Page';
 
 export default function DatePickerScreen() {
   const [selectedDate, setSelectedDate] = React.useState(new Date());
@@ -32,46 +34,40 @@ export default function DatePickerScreen() {
           <Text>{selectedDate.toTimeString()}</Text>
         </Section>
         <Section title={getPickerType()}>
-          <View style={{ gap: 20 }}>
-            <DateTimePicker
-              onDateSelected={(date) => {
-                setSelectedDate(date);
-              }}
-              displayedComponents={
-                typeOptions[
-                  typeIndex
-                ] as DateTimePickerProps['displayedComponents']
-              }
-              variant={
-                displayOptions[selectedIndex] as DateTimePickerProps['variant']
-              }
-              style={{
-                height: Platform.select({ android: 520, ios: undefined }),
-              }}
-              showVariantToggle
-              is24Hour
-            />
+          <Host matchContents={{ vertical: true }}>
+            <Column>
+              <Picker
+                options={displayOptions}
+                selectedIndex={selectedIndex}
+                onOptionSelected={({ nativeEvent: { index } }) => {
+                  setSelectedIndex(index);
+                }}
+                variant="segmented"
+              />
 
-            <Picker
-              options={displayOptions}
-              selectedIndex={selectedIndex}
-              onOptionSelected={({ nativeEvent: { index } }) => {
-                setSelectedIndex(index);
-              }}
-              variant="segmented"
-              style={{ height: 30 }}
-            />
+              <Picker
+                options={typeOptions}
+                selectedIndex={typeIndex}
+                onOptionSelected={({ nativeEvent: { index } }) => {
+                  setTypeIndex(index);
+                }}
+                variant="segmented"
+              />
 
-            <Picker
-              options={typeOptions}
-              selectedIndex={typeIndex}
-              onOptionSelected={({ nativeEvent: { index } }) => {
-                setTypeIndex(index);
-              }}
-              variant="segmented"
-              style={{ height: 30 }}
-            />
-          </View>
+              <DateTimePicker
+                onDateSelected={(date) => {
+                  setSelectedDate(date);
+                }}
+                displayedComponents={
+                  typeOptions[typeIndex] as DateTimePickerProps['displayedComponents']
+                }
+                initialDate={selectedDate.toISOString()}
+                variant={displayOptions[selectedIndex] as DateTimePickerProps['variant']}
+                showVariantToggle
+                is24Hour
+              />
+            </Column>
+          </Host>
         </Section>
       </Page>
     </ScrollView>

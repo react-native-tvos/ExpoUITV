@@ -1,84 +1,122 @@
+import { Button, Host, Label, List, Picker, Section, Text, Toggle } from '@expo/ui/swift-ui';
 import {
-  Button,
-  ColorPicker,
-  Host,
-  Label,
-  List,
-  ListStyle,
-  Picker,
-  Switch,
-  VStack,
-} from '@expo/ui/swift-ui';
+  animation,
+  foregroundStyle,
+  Animation,
+  type ListStyle,
+  listStyle,
+  pickerStyle,
+  refreshable,
+  tag,
+  environment,
+} from '@expo/ui/swift-ui/modifiers';
+import type { SFSymbol } from 'expo-symbols';
 import * as React from 'react';
 
+type ListItem = {
+  id: string;
+  title: string;
+  icon: SFSymbol;
+};
+
+const INITIAL_ITEMS: ListItem[] = [
+  { id: '1', title: 'Sun', icon: 'sun.max.fill' },
+  { id: '2', title: 'Moon', icon: 'moon.fill' },
+  { id: '3', title: 'Star', icon: 'star.fill' },
+  { id: '4', title: 'Cloud', icon: 'cloud.fill' },
+  { id: '5', title: 'Rain', icon: 'cloud.rain.fill' },
+];
+
+const LIST_STYLES: ListStyle[] = [
+  'automatic',
+  'plain',
+  'inset',
+  'insetGrouped',
+  'grouped',
+  'sidebar',
+];
+
 export default function ListScreen() {
-  const [color, setColor] = React.useState<string>('blue');
-  const [selectedIndex, setSelectedIndex] = React.useState<number | null>(0);
-  const data = [
-    { text: 'Good Morning', systemImage: 'sun.max.fill' },
-    { text: 'Weather', systemImage: 'cloud.sun.fill' },
-    { text: 'Settings', systemImage: 'gearshape.fill' },
-    { text: 'Music', systemImage: 'music.note' },
-    { text: 'Home', systemImage: 'house.circle.fill' },
-    { text: 'Location', systemImage: 'location.fill' },
-  ];
-  const listStyleOptions: ListStyle[] = [
-    'automatic',
-    'plain',
-    'inset',
-    'insetGrouped',
-    'grouped',
-    'sidebar',
-  ];
-  const [selectEnabled, setSelectEnabled] = React.useState<boolean>(true);
-  const [deleteEnabled, setDeleteEnabled] = React.useState<boolean>(true);
-  const [moveEnabled, setMoveEnabled] = React.useState<boolean>(true);
-  const [editModeEnabled, setEditModeEnabled] = React.useState<boolean>(false);
+  const [items, setItems] = React.useState<ListItem[]>(INITIAL_ITEMS);
+  const [selectedIds, setSelectedIds] = React.useState<string[]>([]);
+  const [editMode, setEditMode] = React.useState(false);
+  const [listStyleIndex, setListStyleIndex] = React.useState(0);
+
+  const handleDelete = (indices: number[]) => {
+    setItems((prev) => prev.filter((_, i) => !indices.includes(i)));
+  };
+
+  const handleMove = (sourceIndices: number[], destination: number) => {
+    setItems((prev) => {
+      const newItems = [...prev];
+      const [removed] = newItems.splice(sourceIndices[0], 1);
+      const adjustedDest = sourceIndices[0] < destination ? destination - 1 : destination;
+      newItems.splice(adjustedDest, 0, removed);
+      return newItems;
+    });
+  };
+
+  const handleRefresh = async () => {
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    setItems(INITIAL_ITEMS);
+  };
+
+  const resetItems = () => setItems(INITIAL_ITEMS);
+  const clearSelection = () => setSelectedIds([]);
 
   return (
     <Host style={{ flex: 1 }}>
-      <VStack>
-        <List listStyle="automatic" scrollEnabled={false}>
-          <Button onPress={() => setEditModeEnabled(!editModeEnabled)}>Toggle Edit</Button>
-          <Switch value={selectEnabled} label="Select enabled" onValueChange={setSelectEnabled} />
-          <Switch value={deleteEnabled} label="Delete enabled" onValueChange={setDeleteEnabled} />
-          <Switch value={moveEnabled} label="Move enabled" onValueChange={setMoveEnabled} />
-          <ColorPicker
-            label="Item icon color"
-            selection={color}
-            supportsOpacity
-            onValueChanged={setColor}
-          />
+      <List
+        selection={selectedIds}
+        onSelectionChange={(ids) => setSelectedIds(ids.map((id) => id.toString()))}
+        modifiers={[
+          listStyle(LIST_STYLES[listStyleIndex]),
+          refreshable(handleRefresh),
+          animation(Animation.default, editMode),
+          environment('editMode', editMode ? 'active' : 'inactive'),
+        ]}>
+        <Section title="Settings">
+          <Toggle label="Edit Mode" isOn={editMode} onIsOnChange={setEditMode} />
           <Picker
-            label="List style"
-            options={listStyleOptions}
-            selectedIndex={selectedIndex}
-            onOptionSelected={({ nativeEvent: { index } }) => {
-              setSelectedIndex(index);
-            }}
-            variant="menu"
-          />
-        </List>
+            label="List Style"
+            selection={listStyleIndex}
+            onSelectionChange={setListStyleIndex}
+            modifiers={[pickerStyle('menu')]}>
+            {LIST_STYLES.map((style, i) => (
+              <Text key={style} modifiers={[tag(i)]}>
+                {style}
+              </Text>
+            ))}
+          </Picker>
+          <Button label="Reset Items" onPress={resetItems} />
+          <Button label="Clear Selection" onPress={clearSelection} />
+        </Section>
 
-        <List
-          scrollEnabled={false}
-          editModeEnabled={editModeEnabled}
-          onSelectionChange={(items) => alert(`indexes of selected items: ${items.join(', ')}`)}
-          moveEnabled={moveEnabled}
-          onMoveItem={(from, to) => alert(`moved item at index ${from} to index ${to}`)}
-          onDeleteItem={(item) => alert(`deleted item at index: ${item}`)}
-          listStyle={listStyleOptions[selectedIndex ?? 0]}
-          deleteEnabled={deleteEnabled}
-          selectEnabled={selectEnabled}>
-          {data.map((item, index) => (
-            <Label key={index} title={item.text} systemImage={item.systemImage} color={color} />
-          ))}
-        </List>
-      </VStack>
+        <Section title="Info">
+          <Label title={`${items.length} items`} systemImage="number" />
+          <Label
+            title={selectedIds.length > 0 ? `Selected: ${selectedIds.join(', ')}` : 'None selected'}
+            systemImage="checkmark.circle"
+            modifiers={[foregroundStyle(selectedIds.length > 0 ? 'blue' : 'gray')]}
+          />
+        </Section>
+
+        <Section title="Items" footer={<Text>Swipe to delete, drag to reorder</Text>}>
+          <List.ForEach
+            onDelete={handleDelete}
+            onMove={handleMove}
+            modifiers={[animation(Animation.default, editMode)]}>
+            {items.map((item) => (
+              <Label
+                key={item.id}
+                title={item.title}
+                systemImage={item.icon}
+                modifiers={[tag(item.id)]}
+              />
+            ))}
+          </List.ForEach>
+        </Section>
+      </List>
     </Host>
   );
 }
-
-ListScreen.navigationOptions = {
-  title: 'List',
-};
