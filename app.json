@@ -30,6 +30,7 @@
       "package": "com.douglowderexpo.ExpoUITV"
     },
     "ios": {
+      "supportsTablet": true,
       "splash": {
         "image": "./assets/images/splash.png"
       },
