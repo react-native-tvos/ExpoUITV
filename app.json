@@ -24,7 +24,6 @@
       "expo-video"
     ],
     "android": {
-      "edgeToEdgeEnabled": true,
       "splash": {
         "image": "./assets/images/splash.png"
       },
@@ -44,7 +43,6 @@
     "experiments": {
       "typedRoutes": true
     },
-    "newArchEnabled": true,
     "name": "ExpoUITV",
     "slug": "ExpoUITV"
   }
