@@ -8,7 +8,7 @@ import {
 import * as React from 'react';
 import { ScrollView, Text } from 'react-native';
 
-import { Page, Section } from '../../components/Page';
+import { Page, Section } from '../components/Page';
 
 export default function DatePickerScreen() {
   const [selectedDate, setSelectedDate] = React.useState(new Date());
@@ -59,10 +59,16 @@ export default function DatePickerScreen() {
                   setSelectedDate(date);
                 }}
                 displayedComponents={
-                  typeOptions[typeIndex] as DateTimePickerProps['displayedComponents']
+                  typeOptions[
+                    typeIndex
+                  ] as DateTimePickerProps['displayedComponents']
                 }
                 initialDate={selectedDate.toISOString()}
-                variant={displayOptions[selectedIndex] as DateTimePickerProps['variant']}
+                variant={
+                  displayOptions[
+                    selectedIndex
+                  ] as DateTimePickerProps['variant']
+                }
                 showVariantToggle
                 is24Hour
               />

@@ -2,7 +2,7 @@ import { Button as JetpackButton, Host, Shape } from '@expo/ui/jetpack-compose';
 import * as React from 'react';
 import { ScrollView } from 'react-native';
 
-import { Page, Section } from '../../components/Page';
+import { Page, Section } from '../components/Page';
 
 function Button(props: React.ComponentProps<typeof JetpackButton>) {
   return (

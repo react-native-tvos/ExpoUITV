@@ -1,8 +1,13 @@
-import { TextInput, TextInputRef, Button, Host } from '@expo/ui/jetpack-compose';
+import {
+  TextInput,
+  TextInputRef,
+  Button,
+  Host,
+} from '@expo/ui/jetpack-compose';
 import * as React from 'react';
 import { Text } from 'react-native';
 
-import { ScrollPage, Section } from '../../components/Page';
+import { ScrollPage, Section } from '../components/Page';
 
 export default function TextInputScreen() {
   const [value, setValue] = React.useState<string>('');
@@ -16,7 +21,8 @@ export default function TextInputScreen() {
         <Button
           onPress={async () => {
             textRef.current?.setText('Hello there!');
-          }}>
+          }}
+        >
           Set text
         </Button>
       </Host>

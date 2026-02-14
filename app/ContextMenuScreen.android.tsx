@@ -9,7 +9,7 @@ import {
 import * as React from 'react';
 import { View, /* StyleSheet, */ Text } from 'react-native';
 
-import { Section } from '../../components/Page';
+import { Section } from '../components/Page';
 
 // const videoLink =
 //   'https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/360/Big_Buck_Bunny_360_10s_2MB.mp4';

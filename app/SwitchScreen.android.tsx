@@ -1,7 +1,7 @@
 import { Host, Switch } from '@expo/ui/jetpack-compose';
 import * as React from 'react';
 
-import { Page, Section } from '../../components/Page';
+import { Page, Section } from '../components/Page';
 
 export default function SwitchScreen() {
   const [checked, setChecked] = React.useState<boolean>(true);

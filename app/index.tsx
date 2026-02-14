@@ -38,7 +38,7 @@ export default function HomeScreen() {
 
 const DemoButton = function ({ demoName }: { demoName: string }) {
   return (
-    <Link href={`/UI/${demoName}` as Href} asChild>
+    <Link href={demoName as Href} asChild>
       <Pressable>
         {({ pressed, focused }) => (
           <ThemedView

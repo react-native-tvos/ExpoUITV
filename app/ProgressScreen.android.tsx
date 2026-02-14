@@ -8,7 +8,7 @@ import {
 import * as React from 'react';
 import { ScrollView } from 'react-native';
 
-import { Page, Section } from '../../components/Page';
+import { Page, Section } from '../components/Page';
 
 export default function ProgressScreen() {
   const [progress, setProgress] = React.useState(0);

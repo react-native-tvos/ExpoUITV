@@ -10,7 +10,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
-import { Page } from '../../components/Page';
+import { Page } from '../components/Page';
 
 const AnimatedPolygon = Animated.createAnimatedComponent(Shape.Polygon);
 const AnimatedRectangle = Animated.createAnimatedComponent(Shape.Rectangle);

@@ -13,6 +13,10 @@ import {
 } from 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { screenList } from '@/constants/ScreenList';
+import { Platform } from 'react-native';
+
+const platform = Platform.OS as string;
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -49,7 +53,20 @@ export default function RootLayout() {
           name="index"
           options={{ headerShown: false, title: 'Expo UI' }}
         />
-        <Stack.Screen name="UI" options={{ headerShown: false }} />
+        {screenList.map((screen) =>
+          screen.platforms.has(platform) &&
+          !(Platform.isTV && screen.excludedOnTV) ? (
+            <Stack.Screen
+              name={screen.name}
+              key={screen.name}
+              options={{
+                title: screen.name,
+                headerTitle: screen.name,
+                headerShown: !Platform.isTV,
+              }}
+            />
+          ) : null,
+        )}
         <Stack.Screen name="+not-found" />
       </Stack>
     </ThemeProvider>
