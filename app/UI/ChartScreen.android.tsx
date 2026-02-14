@@ -12,7 +12,3 @@ export default function ChartScreen() {
     </ScrollView>
   );
 }
-
-ChartScreen.navigationOptions = {
-  title: 'Chart',
-};

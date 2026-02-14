@@ -13,7 +13,9 @@ export default function AlertDialogScreen() {
   return (
     <ScrollPage>
       <Section title="Alert Dialog">
-        <Button onPress={() => setLargeDialogVisible(true)}>Open Large Alert Dialog</Button>
+        <Button onPress={() => setLargeDialogVisible(true)}>
+          Open Large Alert Dialog
+        </Button>
 
         <AlertDialog
           title="Large Alert Dialog"
@@ -27,7 +29,9 @@ export default function AlertDialogScreen() {
       </Section>
 
       <Section title="Small Alert Dialog">
-        <Button onPress={() => setSmallDialogVisible(true)}>Open Small Alert Dialog</Button>
+        <Button onPress={() => setSmallDialogVisible(true)}>
+          Open Small Alert Dialog
+        </Button>
 
         <AlertDialog
           title="Small Alert Dialog"
@@ -42,7 +46,3 @@ export default function AlertDialogScreen() {
     </ScrollPage>
   );
 }
-
-AlertDialogScreen.navigationOptions = {
-  title: 'AlertDialog',
-};

@@ -1,69 +1,147 @@
-import { DateTimePicker, DateTimePickerProps, Host, Picker, VStack } from '@expo/ui/swift-ui';
-import * as React from 'react';
-import { ScrollView, Text } from 'react-native';
+import {
+  ColorPicker,
+  DatePicker,
+  DatePickerComponent,
+  Form,
+  Host,
+  LabeledContent,
+  Picker,
+  Section,
+  Toggle,
+  Text,
+} from '@expo/ui/swift-ui';
+import {
+  animation,
+  datePickerStyle,
+  pickerStyle,
+  tag,
+  tint,
+  Animation,
+  foregroundStyle,
+} from '@expo/ui/swift-ui/modifiers';
+import { useState } from 'react';
 
-import { Page, Section } from '@/components/Page';
-
+const displayedComponentsOptions = [
+  {
+    value: ['date'],
+    label: 'Date',
+  },
+  {
+    value: ['hourAndMinute'],
+    label: 'Time',
+  },
+  {
+    value: ['date', 'hourAndMinute'],
+    label: 'Both',
+  },
+];
+const styleOptions = ['automatic', 'compact', 'graphical', 'wheel'] as const;
 export default function DatePickerScreen() {
-  const [selectedDate, setSelectedDate] = React.useState(new Date());
-
-  const displayOptions = ['compact', 'graphical', 'wheel'];
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
-
-  const typeOptions = ['date', 'hourAndMinute', 'dateAndTime'];
-  const [typeIndex, setTypeIndex] = React.useState(0);
-
-  function getPickerType() {
-    const str = displayOptions[selectedIndex];
-    return `${str.charAt(0).toUpperCase()}${str.slice(1)} picker`;
-  }
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [styleIndex, setStyleIndex] = useState(0);
+  const [displayedComponentsIndex, setDisplayedComponentsIndex] = useState(0);
+  const [useRange, setUseRange] = useState(false);
+  const [tintColor, setTintColor] = useState<string | null>('#007AFF');
+  const today = new Date();
+  const thirtyDaysFromNow = new Date(
+    today.getTime() + 30 * 24 * 60 * 60 * 1000,
+  );
+  const [animate, setAnimate] = useState(false);
 
   return (
-    <ScrollView>
-      <Page>
-        <Section title="Selected Date">
-          <Text>{selectedDate.toDateString()}</Text>
+    <Host style={{ flex: 1 }}>
+      <Form modifiers={[animation(Animation.default, animate)]}>
+        <Section title="Date Picker">
+          <DatePicker
+            title="Select date"
+            selection={selectedDate}
+            displayedComponents={
+              displayedComponentsOptions[displayedComponentsIndex]
+                .value as unknown as DatePickerComponent[]
+            }
+            range={
+              useRange ? { start: today, end: thirtyDaysFromNow } : undefined
+            }
+            onDateChange={(date) => setSelectedDate(date)}
+            modifiers={[
+              datePickerStyle(styleOptions[styleIndex]),
+              ...(tintColor ? [tint(tintColor)] : []),
+            ]}
+          />
         </Section>
-        <Section title="Selected Time">
-          <Text>{selectedDate.toTimeString()}</Text>
+        <Section title="Selected Values">
+          <LabeledContent label="Date">
+            <Text>{selectedDate.toDateString()}</Text>
+          </LabeledContent>
+          <LabeledContent label="Time">
+            <Text>{selectedDate.toLocaleTimeString()}</Text>
+          </LabeledContent>
         </Section>
-        <Section title={getPickerType()}>
-          <Host matchContents>
-            <VStack alignment="center" spacing={8}>
-              <DateTimePicker
-                onDateSelected={(date) => {
-                  setSelectedDate(date);
-                }}
-                displayedComponents={
-                  typeOptions[typeIndex] as DateTimePickerProps['displayedComponents']
-                }
-                title="Select date"
-                initialDate={selectedDate.toISOString()}
-                variant={displayOptions[selectedIndex] as DateTimePickerProps['variant']}
-              />
-
-              <Picker
-                options={displayOptions}
-                selectedIndex={selectedIndex}
-                onOptionSelected={({ nativeEvent: { index } }) => {
-                  setSelectedIndex(index);
-                }}
-                variant="segmented"
-              />
-
-              <Picker
-                options={typeOptions}
-                selectedIndex={typeIndex}
-                onOptionSelected={({ nativeEvent: { index } }) => {
-                  setTypeIndex(index);
-                }}
-                variant="segmented"
-              />
-            </VStack>
-          </Host>
+        <Section title="Configuration">
+          <Picker
+            label="Style"
+            modifiers={[pickerStyle('menu')]}
+            selection={styleIndex}
+            onSelectionChange={(selection) => {
+              setStyleIndex(selection);
+              setAnimate(!animate);
+            }}
+          >
+            {styleOptions.map((option, index) => (
+              <Text key={index} modifiers={[tag(index)]}>
+                {option}
+              </Text>
+            ))}
+          </Picker>
+          <Picker
+            label="Components"
+            modifiers={[pickerStyle('menu')]}
+            selection={displayedComponentsIndex}
+            onSelectionChange={(selection) => {
+              setDisplayedComponentsIndex(selection);
+              setAnimate(!animate);
+            }}
+          >
+            {displayedComponentsOptions.map((option, index) => (
+              <Text key={index} modifiers={[tag(index)]}>
+                {option.label}
+              </Text>
+            ))}
+          </Picker>
+          <Toggle
+            isOn={useRange}
+            label="Limit to next 30 days"
+            onIsOnChange={setUseRange}
+          />
+          <ColorPicker
+            label="Tint Color"
+            selection={tintColor}
+            onSelectionChange={setTintColor}
+          />
         </Section>
-      </Page>
-    </ScrollView>
+        <Section title="Date Picker with custom label">
+          <DatePicker
+            selection={selectedDate}
+            displayedComponents={
+              displayedComponentsOptions[displayedComponentsIndex]
+                .value as unknown as DatePickerComponent[]
+            }
+            range={
+              useRange ? { start: today, end: thirtyDaysFromNow } : undefined
+            }
+            onDateChange={(date) => setSelectedDate(date)}
+            modifiers={[datePickerStyle(styleOptions[styleIndex])]}
+          >
+            <Text
+              modifiers={[foregroundStyle({ type: 'color', color: '#007AFF' })]}
+            >
+              Select date
+            </Text>
+            <Text>{selectedDate.toDateString()}</Text>
+          </DatePicker>
+        </Section>
+      </Form>
+    </Host>
   );
 }
 

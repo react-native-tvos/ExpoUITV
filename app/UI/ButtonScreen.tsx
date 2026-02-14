@@ -43,7 +43,11 @@ export default function ButtonScreen() {
             <Label
               title="No Padding"
               systemImage="gear"
-              modifiers={[foregroundStyle('black'), padding({ all: 0 }), background('yellow')]}
+              modifiers={[
+                foregroundStyle('black'),
+                padding({ all: 0 }),
+                background('yellow'),
+              ]}
             />
           </Button>
           <Button>
@@ -63,16 +67,26 @@ export default function ButtonScreen() {
         <Section title="System Styles">
           <Button label="Default" />
           <Button label="Glass button" modifiers={[buttonStyle('glass')]} />
-          <Button label="Glass Prominent" modifiers={[buttonStyle('glassProminent')]} />
+          <Button
+            label="Glass Prominent"
+            modifiers={[buttonStyle('glassProminent')]}
+          />
           <Button label="Bordered" modifiers={[buttonStyle('bordered')]} />
           <Button label="Borderless" modifiers={[buttonStyle('borderless')]} />
-          <Button label="Bordered Prominent" modifiers={[buttonStyle('borderedProminent')]} />
+          <Button
+            label="Bordered Prominent"
+            modifiers={[buttonStyle('borderedProminent')]}
+          />
           <Button label="Plain" modifiers={[buttonStyle('plain')]} />
         </Section>
         <Section title="Control Size">
           <Button
             label="Mini glass prominent"
-            modifiers={[controlSize('mini'), buttonStyle('glassProminent'), fixedSize()]}
+            modifiers={[
+              controlSize('mini'),
+              buttonStyle('glassProminent'),
+              fixedSize(),
+            ]}
           />
           <Button
             label="Small bordered"
@@ -82,12 +96,22 @@ export default function ButtonScreen() {
             label="Regular glass"
             modifiers={[controlSize('regular'), buttonStyle('glass')]}
           />
-          <Button label="Large" modifiers={[controlSize('large'), buttonStyle('glassProminent')]} />
-          <Button label="Large glass" modifiers={[controlSize('large'), buttonStyle('glass')]} />
+          <Button
+            label="Large"
+            modifiers={[controlSize('large'), buttonStyle('glassProminent')]}
+          />
+          <Button
+            label="Large glass"
+            modifiers={[controlSize('large'), buttonStyle('glass')]}
+          />
           <Button
             label="Extra Large (iOS 17+)"
             systemImage="square.and.arrow.up"
-            modifiers={[controlSize('extraLarge'), buttonStyle('glassProminent'), tint('orange')]}
+            modifiers={[
+              controlSize('extraLarge'),
+              buttonStyle('glassProminent'),
+              tint('orange'),
+            ]}
           />
         </Section>
         <Section title="Disabled">
@@ -100,9 +124,17 @@ export default function ButtonScreen() {
           <Button label="Destructive" role="destructive" />
         </Section>
         <Section title="Button Images">
-          <Button label="Folder" systemImage="folder" modifiers={[buttonStyle('bordered')]} />
+          <Button
+            label="Folder"
+            systemImage="folder"
+            modifiers={[buttonStyle('bordered')]}
+          />
           <Button label="Tortoise" systemImage="tortoise" />
-          <Button label="Trash" systemImage="trash" modifiers={[buttonStyle('borderless')]} />
+          <Button
+            label="Trash"
+            systemImage="trash"
+            modifiers={[buttonStyle('borderless')]}
+          />
           <Button label="Heart" systemImage="heart" />
           <Button
             label="Settings"
