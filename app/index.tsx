@@ -72,11 +72,6 @@ export default function HomeScreen() {
           <DemoButton demoName="HostingRNViewsScreen" />
         </ThemedView>
       )}
-      {Platform.OS === 'android' && (
-        <ThemedView>
-          <DemoButton demoName="JetpackComposePrimitivesScreen" />
-        </ThemedView>
-      )}
       {Platform.OS === 'ios' && (
         <ThemedView>
           <DemoButton demoName="ListScreen" />
