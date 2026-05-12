@@ -15,6 +15,7 @@
     "deploy": "npx expo export -p web && npx eas-cli@latest deploy"
   },
   "dependencies": {
+    "@expo/dom-webview": "^56.0.4",
     "@expo/html-elements": "^0.12.5",
     "@expo/metro-runtime": "~56.0.6",
     "@expo/ui": "~56.0.5",
