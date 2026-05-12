@@ -32,11 +32,11 @@ export default function UIScreen() {
       withRepeat(
         withSequence(
           withTiming(1, { duration: 1000, easing: Easing.cubic }),
-          withTiming(0, { duration: 1000, easing: Easing.cubic }),
+          withTiming(0, { duration: 1000, easing: Easing.cubic })
         ),
         -1,
-        true,
-      ),
+        true
+      )
     );
   }, []);
 
@@ -47,11 +47,11 @@ export default function UIScreen() {
       withRepeat(
         withSequence(
           withTiming(0, { duration: 1000, easing: Easing.cubic }),
-          withTiming(0.2, { duration: 1000, easing: Easing.cubic }),
+          withTiming(0.2, { duration: 1000, easing: Easing.cubic })
         ),
         -1,
-        true,
-      ),
+        true
+      )
     );
   }, []);
 
@@ -62,11 +62,11 @@ export default function UIScreen() {
       withRepeat(
         withSequence(
           withTiming(0.8, { duration: 1000, easing: Easing.cubic }),
-          withTiming(0.6, { duration: 1000, easing: Easing.cubic }),
+          withTiming(0.6, { duration: 1000, easing: Easing.cubic })
         ),
         -1,
-        true,
-      ),
+        true
+      )
     );
   }, []);
 
@@ -77,8 +77,7 @@ export default function UIScreen() {
           display: 'flex',
           flexDirection: 'row',
           flexWrap: 'wrap',
-        }}
-      >
+        }}>
         <Host style={{ width: 140 * 3, height: 140 }}>
           <Row>
             <AnimatedPolygon

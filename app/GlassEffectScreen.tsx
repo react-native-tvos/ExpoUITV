@@ -17,6 +17,7 @@ import {
   background,
   cornerRadius,
   frame,
+  foregroundStyle,
 } from '@expo/ui/swift-ui/modifiers';
 import { useId, useState } from 'react';
 import { View } from 'react-native';
@@ -30,15 +31,11 @@ export default function GlassEffect() {
       style={{
         flex: 1,
         experimental_backgroundImage: `linear-gradient(135deg, #667eea 0%, #764ba2 100%)`,
-      }}
-    >
+      }}>
       <Host style={{ flex: 1 }}>
         <VStack
           spacing={60}
-          modifiers={[
-            animation(Animation.spring({ duration: 0.8 }), isGlassExpanded),
-          ]}
-        >
+          modifiers={[animation(Animation.spring({ duration: 0.8 }), isGlassExpanded)]}>
           <Namespace id={namespaceId}>
             <GlassEffectContainer
               spacing={30}
@@ -46,8 +43,7 @@ export default function GlassEffect() {
                 animation(Animation.spring({ duration: 0.8 }), isGlassExpanded),
                 padding({ all: 30 }),
                 cornerRadius(20),
-              ]}
-            >
+              ]}>
               <VStack spacing={25}>
                 <HStack spacing={25}>
                   <Image
@@ -152,34 +148,20 @@ export default function GlassEffect() {
 
           <VStack spacing={15}>
             <Button
-              onPress={() => setIsGlassExpanded(true)}
+              onPress={() => setIsGlassExpanded(!isGlassExpanded)}
               modifiers={[
                 padding({ horizontal: 30, vertical: 15 }),
-                background('#764ba2'),
+                background('#000'),
                 cornerRadius(25),
                 glassEffect({
                   glass: {
                     variant: 'clear',
                   },
                 }),
-              ]}
-            >
-              <Text color="#fff">Show More Tools</Text>
-            </Button>
-            <Button
-              onPress={() => setIsGlassExpanded(false)}
-              modifiers={[
-                padding({ horizontal: 30, vertical: 15 }),
-                background('#764ba2'),
-                cornerRadius(25),
-                glassEffect({
-                  glass: {
-                    variant: 'regular',
-                  },
-                }),
-              ]}
-            >
-              <Text color="#fff">Hide Tools</Text>
+              ]}>
+              <Text modifiers={[foregroundStyle('#fff')]}>
+                {isGlassExpanded ? 'Hide Tools' : 'Show More Tools'}
+              </Text>
             </Button>
           </VStack>
         </VStack>

@@ -78,21 +78,9 @@ const timeSeriesAnnotations: ChartDataPoint[] = [
 
 type DataSet = 'sales' | 'temperature' | 'performance' | 'timeSeries';
 
-const dataSet: DataSet[] = [
-  'sales',
-  'temperature',
-  'performance',
-  'timeSeries',
-];
+const dataSet: DataSet[] = ['sales', 'temperature', 'performance', 'timeSeries'];
 
-const charts: ChartType[] = [
-  'line',
-  'point',
-  'bar',
-  'area',
-  'pie',
-  'rectangle',
-];
+const charts: ChartType[] = ['line', 'point', 'bar', 'area', 'pie', 'rectangle'];
 
 const chartConfig = {
   chartTypeOptions: ['Line', 'Point', 'Bar', 'Area', 'Pie', 'Rectangle'],
@@ -249,13 +237,8 @@ export default function ChartScreen() {
   };
 
   return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={styles.contentContainer}
-    >
-      <HeadingText style={styles.heading}>
-        Native Swift Charts with Styling
-      </HeadingText>
+    <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+      <HeadingText style={styles.heading}>Native Swift Charts with Styling</HeadingText>
       <Text style={styles.description}>
         Interactive charts with custom styling options per chart type (iOS 16+)
         {'\n'}Supports both categorical (string) and numeric x-axis values
@@ -269,31 +252,23 @@ export default function ChartScreen() {
             showGrid={gridIndex === 1}
             animate={animateIndex === 1}
             showLegend={legendIndex === 1}
-            referenceLines={
-              showReferenceLinesIndex === 1 ? getCurrentReferenceLines() : []
-            }
+            referenceLines={showReferenceLinesIndex === 1 ? getCurrentReferenceLines() : []}
             lineStyle={chartType === 'line' ? getLineStyle() : undefined}
             pointStyle={chartType === 'point' ? getPointStyle() : undefined}
             areaStyle={chartType === 'area' ? getAreaStyle() : undefined}
             barStyle={chartType === 'bar' ? getBarStyle() : undefined}
             pieStyle={chartType === 'pie' ? getPieStyle() : undefined}
-            rectangleStyle={
-              chartType === 'rectangle' ? getRectangleStyle() : undefined
-            }
-            ruleStyle={
-              showReferenceLinesIndex === 1 ? getRuleStyle() : undefined
-            }
+            rectangleStyle={chartType === 'rectangle' ? getRectangleStyle() : undefined}
+            ruleStyle={showReferenceLinesIndex === 1 ? getRuleStyle() : undefined}
             style={styles.chart}
           />
         </Host>
       </View>
       <View style={styles.settingsContainer}>
         <MonoText textStyle={styles.settings}>
-          Type: {chartType} | Data: {dataSet} | Grid:{' '}
-          {gridIndex === 1 ? 'ON' : 'OFF'} | Animate:{' '}
-          {animateIndex === 1 ? 'ON' : 'OFF'} | Legend:{' '}
-          {legendIndex === 1 ? 'ON' : 'OFF'} | Reference Lines:{' '}
-          {showReferenceLinesIndex === 1 ? 'ON' : 'OFF'}
+          Type: {chartType} | Data: {dataSet} | Grid: {gridIndex === 1 ? 'ON' : 'OFF'} | Animate:{' '}
+          {animateIndex === 1 ? 'ON' : 'OFF'} | Legend: {legendIndex === 1 ? 'ON' : 'OFF'} |
+          Reference Lines: {showReferenceLinesIndex === 1 ? 'ON' : 'OFF'}
         </MonoText>
       </View>
       <HeadingText style={styles.controlHeading}>Chart Type</HeadingText>
@@ -302,8 +277,7 @@ export default function ChartScreen() {
           <Picker
             modifiers={[pickerStyle('segmented')]}
             selection={chartTypeIndex}
-            onSelectionChange={setChartTypeIndex}
-          >
+            onSelectionChange={setChartTypeIndex}>
             {chartConfig.chartTypeOptions.map((option, index) => (
               <SwiftUIText key={index} modifiers={[tag(index)]}>
                 {option}
@@ -318,8 +292,7 @@ export default function ChartScreen() {
           <Picker
             modifiers={[pickerStyle('segmented')]}
             selection={dataSetIndex}
-            onSelectionChange={setDataSetIndex}
-          >
+            onSelectionChange={setDataSetIndex}>
             {chartConfig.dataSetOptions.map((option, index) => (
               <SwiftUIText key={index} modifiers={[tag(index)]}>
                 {option}
@@ -339,8 +312,7 @@ export default function ChartScreen() {
               <Picker
                 modifiers={[pickerStyle('segmented')]}
                 selection={lineStyleIndex}
-                onSelectionChange={setLineStyleIndex}
-              >
+                onSelectionChange={setLineStyleIndex}>
                 {chartConfig.lineStyle.options.map((option, index) => (
                   <SwiftUIText key={index} modifiers={[tag(index)]}>
                     {option}
@@ -355,8 +327,7 @@ export default function ChartScreen() {
               <Picker
                 modifiers={[pickerStyle('segmented')]}
                 selection={pointStyleIndex}
-                onSelectionChange={setPointStyleIndex}
-              >
+                onSelectionChange={setPointStyleIndex}>
                 {chartConfig.pointStyle.options.map((option, index) => (
                   <SwiftUIText key={index} modifiers={[tag(index)]}>
                     {option}
@@ -378,8 +349,7 @@ export default function ChartScreen() {
               <Picker
                 modifiers={[pickerStyle('segmented')]}
                 selection={barCornerRadiusIndex}
-                onSelectionChange={setBarCornerRadiusIndex}
-              >
+                onSelectionChange={setBarCornerRadiusIndex}>
                 {chartConfig.barCornerRadius.options.map((option, index) => (
                   <SwiftUIText key={index} modifiers={[tag(index)]}>
                     {option}
@@ -396,8 +366,7 @@ export default function ChartScreen() {
                   <Picker
                     modifiers={[pickerStyle('segmented')]}
                     selection={barWidthIndex}
-                    onSelectionChange={setBarWidthIndex}
-                  >
+                    onSelectionChange={setBarWidthIndex}>
                     {chartConfig.barWidth.options.map((option, index) => (
                       <SwiftUIText key={index} modifiers={[tag(index)]}>
                         {option}
@@ -419,8 +388,7 @@ export default function ChartScreen() {
               <Picker
                 modifiers={[pickerStyle('segmented')]}
                 selection={pieInnerRadiusIndex}
-                onSelectionChange={setPieInnerRadiusIndex}
-              >
+                onSelectionChange={setPieInnerRadiusIndex}>
                 {chartConfig.pieInnerRadius.options.map((option, index) => (
                   <SwiftUIText key={index} modifiers={[tag(index)]}>
                     {option}
@@ -435,8 +403,7 @@ export default function ChartScreen() {
               <Picker
                 modifiers={[pickerStyle('segmented')]}
                 selection={pieAngularInsetIndex}
-                onSelectionChange={setPieAngularInsetIndex}
-              >
+                onSelectionChange={setPieAngularInsetIndex}>
                 {chartConfig.pieAngularInset.options.map((option, index) => (
                   <SwiftUIText key={index} modifiers={[tag(index)]}>
                     {option}
@@ -454,8 +421,7 @@ export default function ChartScreen() {
           <Picker
             modifiers={[pickerStyle('segmented')]}
             selection={gridIndex}
-            onSelectionChange={setGridIndex}
-          >
+            onSelectionChange={setGridIndex}>
             {chartConfig.toggleOptions.map((option, index) => (
               <SwiftUIText key={index} modifiers={[tag(index)]}>
                 {option}
@@ -470,8 +436,7 @@ export default function ChartScreen() {
           <Picker
             modifiers={[pickerStyle('segmented')]}
             selection={animateIndex}
-            onSelectionChange={setAnimateIndex}
-          >
+            onSelectionChange={setAnimateIndex}>
             {chartConfig.toggleOptions.map((option, index) => (
               <SwiftUIText key={index} modifiers={[tag(index)]}>
                 {option}
@@ -481,16 +446,13 @@ export default function ChartScreen() {
         </Host>
       </View>
       <Text style={styles.optionLabel}>Legend</Text>
-      <Text style={styles.optionDescription}>
-        Useful for bar and pie charts
-      </Text>
+      <Text style={styles.optionDescription}>Useful for bar and pie charts</Text>
       <View style={styles.pickerContainer}>
         <Host matchContents>
           <Picker
             modifiers={[pickerStyle('segmented')]}
             selection={legendIndex}
-            onSelectionChange={setLegendIndex}
-          >
+            onSelectionChange={setLegendIndex}>
             {chartConfig.toggleOptions.map((option, index) => (
               <SwiftUIText key={index} modifiers={[tag(index)]}>
                 {option}
@@ -500,16 +462,13 @@ export default function ChartScreen() {
         </Host>
       </View>
       <Text style={styles.optionLabel}>Reference Lines</Text>
-      <Text style={styles.optionDescription}>
-        Add reference lines to charts
-      </Text>
+      <Text style={styles.optionDescription}>Add reference lines to charts</Text>
       <View style={styles.pickerContainer}>
         <Host matchContents>
           <Picker
             modifiers={[pickerStyle('segmented')]}
             selection={showReferenceLinesIndex}
-            onSelectionChange={setShowReferenceLinesIndex}
-          >
+            onSelectionChange={setShowReferenceLinesIndex}>
             {chartConfig.toggleOptions.map((option, index) => (
               <SwiftUIText key={index} modifiers={[tag(index)]}>
                 {option}
@@ -521,16 +480,13 @@ export default function ChartScreen() {
       {showReferenceLinesIndex === 1 && (
         <>
           <Text style={styles.optionLabel}>Rule Line Width</Text>
-          <Text style={styles.optionDescription}>
-            Set the thickness of rule lines
-          </Text>
+          <Text style={styles.optionDescription}>Set the thickness of rule lines</Text>
           <View style={styles.pickerContainer}>
             <Host matchContents>
               <Picker
                 modifiers={[pickerStyle('segmented')]}
                 selection={ruleLineWidthIndex}
-                onSelectionChange={setRuleLineWidthIndex}
-              >
+                onSelectionChange={setRuleLineWidthIndex}>
                 {chartConfig.ruleLine.widthOptions.map((option, index) => (
                   <SwiftUIText key={index} modifiers={[tag(index)]}>
                     {option}
@@ -540,16 +496,13 @@ export default function ChartScreen() {
             </Host>
           </View>
           <Text style={styles.optionLabel}>Rule Line Style</Text>
-          <Text style={styles.optionDescription}>
-            Set the dash pattern for rule lines
-          </Text>
+          <Text style={styles.optionDescription}>Set the dash pattern for rule lines</Text>
           <View style={styles.pickerContainer}>
             <Host matchContents>
               <Picker
                 modifiers={[pickerStyle('segmented')]}
                 selection={ruleDashIndex}
-                onSelectionChange={setRuleDashIndex}
-              >
+                onSelectionChange={setRuleDashIndex}>
                 {chartConfig.ruleDash.options.map((option, index) => (
                   <SwiftUIText key={index} modifiers={[tag(index)]}>
                     {option}

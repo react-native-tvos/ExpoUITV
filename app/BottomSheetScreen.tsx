@@ -3,6 +3,7 @@ import {
   BottomSheet,
   Form,
   Host,
+  List,
   Picker,
   RNHostView,
   Section,
@@ -39,15 +40,21 @@ export default function BottomSheetScreen() {
   const [useMedium, setUseMedium] = React.useState(true);
   const [useLarge, setUseLarge] = React.useState(true);
   const [useFraction, setUseFraction] = React.useState(false);
-  const [dragIndicator, setDragIndicator] =
-    React.useState<DragIndicatorOption>('automatic');
-  const [backgroundInteractionEnabled, setBackgroundInteractionEnabled] =
-    React.useState(false);
+  const [dragIndicator, setDragIndicator] = React.useState<DragIndicatorOption>('automatic');
+  const [backgroundInteractionEnabled, setBackgroundInteractionEnabled] = React.useState(false);
   const [dismissDisabled, setDismissDisabled] = React.useState(false);
 
+  const [showSelectionTracking, setShowSelectionTracking] = React.useState(false);
+  const selectionDetents: PresentationDetent[] = [
+    { height: 300 },
+    { fraction: 0.3 },
+    'medium',
+    'large',
+  ];
+  const [selectedDetent, setSelectedDetent] = React.useState<PresentationDetent>('medium');
+
   const [showRNContent, setShowRNContent] = React.useState(false);
-  const [showRNContentWithFlex1, setShowRNContentWithFlex1] =
-    React.useState(false);
+  const [showRNContentWithFlex1, setShowRNContentWithFlex1] = React.useState(false);
   const [counter, setCounter] = React.useState(0);
 
   const configuredDetents: PresentationDetent[] = (() => {
@@ -59,10 +66,7 @@ export default function BottomSheetScreen() {
   })();
 
   const configuredModifiers = (() => {
-    const mods = [
-      presentationDetents(configuredDetents),
-      presentationDragIndicator(dragIndicator),
-    ];
+    const mods = [presentationDetents(configuredDetents), presentationDragIndicator(dragIndicator)];
 
     if (backgroundInteractionEnabled) {
       mods.push(presentationBackgroundInteraction('enabled'));
@@ -92,32 +96,19 @@ export default function BottomSheetScreen() {
           <Text modifiers={[foregroundStyle('secondaryLabel')]}>
             Sheet automatically sizes to fit its content
           </Text>
-          <Button
-            label="Open Fits Content Sheet"
-            onPress={() => setShowFitsContent(true)}
-          />
+          <Button label="Open Fits Content Sheet" onPress={() => setShowFitsContent(true)} />
         </Section>
 
         <Section title="Configured Sheet">
-          <Button
-            label="Open Configured Sheet"
-            onPress={() => setShowConfigured(true)}
-          />
+          <Button label="Open Configured Sheet" onPress={() => setShowConfigured(true)} />
           <Toggle isOn={useMedium} onIsOnChange={setUseMedium} label="Medium" />
           <Toggle isOn={useLarge} onIsOnChange={setUseLarge} label="Large" />
-          <Toggle
-            isOn={useFraction}
-            onIsOnChange={setUseFraction}
-            label="30% (Fraction)"
-          />
+          <Toggle isOn={useFraction} onIsOnChange={setUseFraction} label="30% (Fraction)" />
           <Picker
             label="Drag Indicator"
             modifiers={[pickerStyle('menu')]}
             selection={dragIndicatorOptions.indexOf(dragIndicator)}
-            onSelectionChange={(index) =>
-              setDragIndicator(dragIndicatorOptions[index])
-            }
-          >
+            onSelectionChange={(index) => setDragIndicator(dragIndicatorOptions[index])}>
             {dragIndicatorOptions.map((option, index) => (
               <Text key={option} modifiers={[tag(index)]}>
                 {option}
@@ -136,14 +127,18 @@ export default function BottomSheetScreen() {
           />
         </Section>
 
+        <Section title="Selection Tracking">
+          <Button
+            label="Open Selection Tracking Sheet"
+            onPress={() => setShowSelectionTracking(true)}
+          />
+        </Section>
+
         <Section title="React Native Content">
           <Text modifiers={[foregroundStyle('secondaryLabel')]}>
             Sheet with React Native views inside
           </Text>
-          <Button
-            label="Open RN Content Sheet"
-            onPress={() => setShowRNContent(true)}
-          />
+          <Button label="Open RN Content Sheet" onPress={() => setShowRNContent(true)} />
         </Section>
         <Section title="React Native Content with flex 1 children">
           <Button
@@ -170,8 +165,7 @@ export default function BottomSheetScreen() {
       <BottomSheet
         isPresented={showFitsContent}
         onIsPresentedChange={setShowFitsContent}
-        fitToContents
-      >
+        fitToContents>
         <Group>
           <VStack modifiers={[padding({ all: 20 })]}>
             <Text>Fits Content Sheet</Text>
@@ -184,10 +178,7 @@ export default function BottomSheetScreen() {
       </BottomSheet>
 
       {/* Configured Sheet */}
-      <BottomSheet
-        isPresented={showConfigured}
-        onIsPresentedChange={setShowConfigured}
-      >
+      <BottomSheet isPresented={showConfigured} onIsPresentedChange={setShowConfigured}>
         <Group modifiers={configuredModifiers}>
           <VStack modifiers={[padding({ all: 20 }), frame({ minHeight: 200 })]}>
             <Text>Configured Sheet</Text>
@@ -198,8 +189,7 @@ export default function BottomSheetScreen() {
               Drag Indicator: {dragIndicator}
             </Text>
             <Text modifiers={[foregroundStyle('secondaryLabel')]}>
-              Background Interaction:{' '}
-              {backgroundInteractionEnabled ? 'enabled' : 'disabled'}
+              Background Interaction: {backgroundInteractionEnabled ? 'enabled' : 'disabled'}
             </Text>
             <Text modifiers={[foregroundStyle('secondaryLabel')]}>
               Dismiss: {dismissDisabled ? 'disabled' : 'enabled'}
@@ -209,23 +199,43 @@ export default function BottomSheetScreen() {
         </Group>
       </BottomSheet>
 
-      {/* React Native Content Sheet */}
+      {/* Selection Tracking Sheet */}
       <BottomSheet
-        isPresented={showRNContent}
-        onIsPresentedChange={setShowRNContent}
-        fitToContents
-      >
+        isPresented={showSelectionTracking}
+        onIsPresentedChange={setShowSelectionTracking}>
+        <Group
+          modifiers={[
+            presentationDetents(selectionDetents, {
+              selection: selectedDetent,
+              onSelectionChange: setSelectedDetent,
+            }),
+            presentationDragIndicator('visible'),
+          ]}>
+          <List>
+            <Section title="Change Detent">
+              <Button label="Height 300" onPress={() => setSelectedDetent({ height: 300 })} />
+              <Button label="Fraction 0.3" onPress={() => setSelectedDetent({ fraction: 0.3 })} />
+              <Button label="Medium" onPress={() => setSelectedDetent('medium')} />
+              <Button label="Large" onPress={() => setSelectedDetent('large')} />
+            </Section>
+            <Section title="Current">
+              <Text modifiers={[foregroundStyle('secondaryLabel')]}>
+                {formatDetent(selectedDetent)}
+              </Text>
+            </Section>
+          </List>
+        </Group>
+      </BottomSheet>
+
+      {/* React Native Content Sheet */}
+      <BottomSheet isPresented={showRNContent} onIsPresentedChange={setShowRNContent} fitToContents>
         <Group modifiers={[presentationDragIndicator('visible')]}>
           <RNHostView matchContents>
             <View style={{ padding: 24 }}>
-              <RNText
-                style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 8 }}
-              >
+              <RNText style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 8 }}>
                 React Native Content
               </RNText>
-              <RNText style={{ color: '#666', marginBottom: 16 }}>
-                Counter: {counter}
-              </RNText>
+              <RNText style={{ color: '#666', marginBottom: 16 }}>Counter: {counter}</RNText>
               <Pressable
                 style={{
                   backgroundColor: '#007AFF',
@@ -234,11 +244,8 @@ export default function BottomSheetScreen() {
                   alignItems: 'center',
                   marginBottom: 12,
                 }}
-                onPress={() => setCounter(counter + 1)}
-              >
-                <RNText style={{ color: 'white', fontWeight: '600' }}>
-                  Increment
-                </RNText>
+                onPress={() => setCounter(counter + 1)}>
+                <RNText style={{ color: 'white', fontWeight: '600' }}>Increment</RNText>
               </Pressable>
               <Pressable
                 style={{
@@ -247,11 +254,8 @@ export default function BottomSheetScreen() {
                   borderRadius: 8,
                   alignItems: 'center',
                 }}
-                onPress={() => setShowRNContent(false)}
-              >
-                <RNText style={{ color: 'white', fontWeight: '600' }}>
-                  Close
-                </RNText>
+                onPress={() => setShowRNContent(false)}>
+                <RNText style={{ color: 'white', fontWeight: '600' }}>Close</RNText>
               </Pressable>
             </View>
           </RNHostView>
@@ -261,19 +265,15 @@ export default function BottomSheetScreen() {
       {/* React Native Content Sheet with flex 1 children */}
       <BottomSheet
         isPresented={showRNContentWithFlex1}
-        onIsPresentedChange={setShowRNContentWithFlex1}
-      >
+        onIsPresentedChange={setShowRNContentWithFlex1}>
         <Group
           modifiers={[
             presentationDetents(['medium', 'large']),
             presentationDragIndicator('visible'),
-          ]}
-        >
+          ]}>
           <RNHostView>
             <View style={{ flex: 1, backgroundColor: 'blue' }}>
-              <RNText
-                style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 8 }}
-              >
+              <RNText style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 8 }}>
                 React Native Content
               </RNText>
             </View>

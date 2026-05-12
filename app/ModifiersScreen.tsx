@@ -14,6 +14,7 @@ import {
   Capsule,
   Stepper,
   Spacer,
+  Image,
 } from '@expo/ui/swift-ui';
 import {
   background,
@@ -49,6 +50,7 @@ import {
   allowsTightening,
   truncationMode,
   kerning,
+  monospacedDigit,
   textCase,
   underline,
   strikethrough,
@@ -65,7 +67,9 @@ import {
   lineLimit,
   contentShape,
   shapes,
+  resizable,
 } from '@expo/ui/swift-ui/modifiers';
+import { useAssets } from 'expo-asset';
 import { useState } from 'react';
 import {
   ScrollView,
@@ -87,8 +91,7 @@ export default function ModifiersScreen() {
   const [hideScrollBackground, setHideScrollBackground] = useState(false);
 
   const [rowColor, setRowColor] = useState<string>('white');
-  const [backgroundFormColor, setBackgroundFormColor] =
-    useState<string>('#EAEAEAFF');
+  const [backgroundFormColor, setBackgroundFormColor] = useState<string>('#EAEAEAFF');
 
   const truncationModeOptions = ['head', 'middle', 'tail'];
   const [truncationModeIndex, setTruncationMode] = useState(0);
@@ -121,47 +124,32 @@ export default function ModifiersScreen() {
   const badgeType = ['standard', 'increased', 'decreased'] as const;
   const [badgeIndex, setBadgeIndex] = useState(0);
 
-  const [containerRelativeFrameCount, setContainerRelativeFrameCount] =
-    useState(1);
+  const [containerRelativeFrameCount, setContainerRelativeFrameCount] = useState(1);
   const [contentShapeButtonCounter, setcontentShapeButtonCounter] = useState(0);
+  const [assets] = useAssets([require('../assets/images/logo-wordmark.png')]);
+  const wordmarkUri = assets?.[0]?.localUri;
 
   return (
     <ScrollView>
       <Host matchContents>
         <Form
           modifiers={[
-            scrollContentBackground(
-              hideScrollBackground ? 'hidden' : 'visible',
-            ),
+            scrollContentBackground(hideScrollBackground ? 'hidden' : 'visible'),
             background(backgroundFormColor),
             frame({
-              height:
-                dimensions.height - safeAreaInsets.top - safeAreaInsets.bottom,
+              height: dimensions.height - safeAreaInsets.top - safeAreaInsets.bottom,
               width: dimensions.width,
             }),
-          ]}
-        >
+          ]}>
           {/* Badge modifiers */}
           <Section title="Badge modifier">
-            <Text
-              modifiers={[badge(''), badgeProminence(badgeType[badgeIndex])]}
-            >
-              Badge empty
-            </Text>
-            <Text
-              modifiers={[
-                badge('Hello'),
-                badgeProminence(badgeType[badgeIndex]),
-              ]}
-            >
-              Badge
-            </Text>
+            <Text modifiers={[badge(''), badgeProminence(badgeType[badgeIndex])]}>Badge empty</Text>
+            <Text modifiers={[badge('Hello'), badgeProminence(badgeType[badgeIndex])]}>Badge</Text>
             <Picker
-              label="Select badge type"
+              label="Select dabge type"
               modifiers={[pickerStyle('menu')]}
               selection={badgeIndex}
-              onSelectionChange={setBadgeIndex}
-            >
+              onSelectionChange={setBadgeIndex}>
               {badgeType.map((type, index) => (
                 <Text key={index} modifiers={[tag(index)]}>
                   {type}
@@ -173,10 +161,7 @@ export default function ModifiersScreen() {
           {/* List modifiers */}
           <Section
             title="Section with margin of length 30"
-            modifiers={[
-              listSectionMargins({ edges: 'horizontal', length: 40 }),
-            ]}
-          >
+            modifiers={[listSectionMargins({ edges: 'horizontal', length: 40 })]}>
             <HStack
               modifiers={[
                 frame({ width: 300, height: 100 }),
@@ -184,8 +169,7 @@ export default function ModifiersScreen() {
                 cornerRadius(20),
                 padding({ all: 8 }),
                 shadow({ radius: 8, x: 0, y: 4, color: '#4facfe40' }),
-              ]}
-            >
+              ]}>
               <View style={[styles.uiView, { width: 280, height: 80 }]}>
                 <RNText style={styles.uiViewText}>Any text</RNText>
               </View>
@@ -206,15 +190,12 @@ export default function ModifiersScreen() {
                     }),
                   ]
                 : []),
-            ]}
-          >
+            ]}>
             <VStack spacing={20}>
               <Toggle
                 label="Enable Insets"
                 isOn={enableRowInsets.enabled}
-                onIsOnChange={(v) =>
-                  setEnableRowInsets((prev) => ({ ...prev, enabled: v }))
-                }
+                onIsOnChange={(v) => setEnableRowInsets((prev) => ({ ...prev, enabled: v }))}
               />
               <HStack spacing={20}>
                 {[
@@ -226,12 +207,8 @@ export default function ModifiersScreen() {
                       <Toggle
                         key={key}
                         label={insets.find((inset) => inset.key === key)!.label}
-                        isOn={
-                          enableRowInsets[key as keyof typeof enableRowInsets]
-                        }
-                        onIsOnChange={(v) =>
-                          setEnableRowInsets((prev) => ({ ...prev, [key]: v }))
-                        }
+                        isOn={enableRowInsets[key as keyof typeof enableRowInsets]}
+                        onIsOnChange={(v) => setEnableRowInsets((prev) => ({ ...prev, [key]: v }))}
                         modifiers={[disabled(!enableRowInsets.enabled)]}
                       />
                     ))}
@@ -244,9 +221,7 @@ export default function ModifiersScreen() {
           <Section title="List row separator">
             <Text>Default separator</Text>
             <Text>Default separator</Text>
-            <Text modifiers={[listRowSeparator('hidden')]}>
-              Hidden separator
-            </Text>
+            <Text modifiers={[listRowSeparator('hidden')]}>Hidden separator</Text>
           </Section>
 
           {/* Text modifiers */}
@@ -258,22 +233,17 @@ export default function ModifiersScreen() {
                 font({ size: 16 }),
                 allowsTightening(allowTightening),
                 truncationMode(
-                  truncationModeOptions[truncationModeIndex] as
-                    | 'head'
-                    | 'middle'
-                    | 'tail',
+                  truncationModeOptions[truncationModeIndex] as 'head' | 'middle' | 'tail'
                 ),
                 frame({ width: 160, height: 50, alignment: 'leading' }),
-              ]}
-            >
+              ]}>
               This is a wide text element
             </Text>
             <Picker
               label="Select mode"
               modifiers={[pickerStyle('menu')]}
               selection={truncationModeIndex}
-              onSelectionChange={setTruncationMode}
-            >
+              onSelectionChange={setTruncationMode}>
               {truncationModeOptions.map((option, index) => (
                 <Text key={index} modifiers={[tag(index)]}>
                   {option}
@@ -285,18 +255,25 @@ export default function ModifiersScreen() {
               isOn={allowTightening}
               onIsOnChange={setAllowsTightening}
             />
-            <Text modifiers={[font({ size: 14 }), kerning(kerningValue)]}>
-              Kerning Text
-            </Text>
+            <Text modifiers={[font({ size: 14 }), kerning(kerningValue)]}>Kerning Text</Text>
             <Slider min={0} max={10} onValueChange={setKerning} />
 
+            <HStack alignment="center" spacing={40}>
+              <VStack spacing={4}>
+                <Text modifiers={[font({ size: 12 })]}>Default</Text>
+                <Text modifiers={[font({ size: 20 })]}>1111111111</Text>
+                <Text modifiers={[font({ size: 20 })]}>0000000000</Text>
+              </VStack>
+              <VStack spacing={4}>
+                <Text modifiers={[font({ size: 12 })]}>monospacedDigit</Text>
+                <Text modifiers={[font({ size: 20 }), monospacedDigit()]}>1111111111</Text>
+                <Text modifiers={[font({ size: 20 }), monospacedDigit()]}>0000000000</Text>
+              </VStack>
+            </HStack>
+
             <HStack spacing={20}>
-              <Text modifiers={[font({ size: 14 }), textCase('lowercase')]}>
-                lowercase
-              </Text>
-              <Text modifiers={[font({ size: 14 }), textCase('uppercase')]}>
-                uppercase
-              </Text>
+              <Text modifiers={[font({ size: 14 }), textCase('lowercase')]}>lowercase</Text>
+              <Text modifiers={[font({ size: 14 }), textCase('uppercase')]}>uppercase</Text>
             </HStack>
 
             <HStack alignment="center" spacing={80}>
@@ -305,57 +282,36 @@ export default function ModifiersScreen() {
                 <Text
                   modifiers={[
                     font({ size: 14 }),
-                    underline({
-                      isActive: true,
-                      pattern: 'solid',
-                      color: 'red',
-                    }),
-                  ]}
-                >
+                    underline({ isActive: true, pattern: 'solid', color: 'red' }),
+                  ]}>
                   Text 1
                 </Text>
                 <Text
                   modifiers={[
                     font({ size: 14 }),
-                    underline({
-                      isActive: true,
-                      pattern: 'dash',
-                      color: 'green',
-                    }),
-                  ]}
-                >
+                    underline({ isActive: true, pattern: 'dash', color: 'green' }),
+                  ]}>
                   Text 2
                 </Text>
                 <Text
                   modifiers={[
                     font({ size: 14 }),
-                    underline({
-                      isActive: true,
-                      pattern: 'dot',
-                      color: 'blue',
-                    }),
-                  ]}
-                >
+                    underline({ isActive: true, pattern: 'dot', color: 'blue' }),
+                  ]}>
                   Text 3
                 </Text>
                 <Text
                   modifiers={[
                     font({ size: 14 }),
                     underline({ isActive: true, pattern: 'dashDot' }),
-                  ]}
-                >
+                  ]}>
                   Text 4
                 </Text>
                 <Text
                   modifiers={[
                     font({ size: 14 }),
-                    underline({
-                      isActive: true,
-                      pattern: 'dashDotDot',
-                      color: 'pink',
-                    }),
-                  ]}
-                >
+                    underline({ isActive: true, pattern: 'dashDotDot', color: 'pink' }),
+                  ]}>
                   Text 5
                 </Text>
               </VStack>
@@ -364,57 +320,36 @@ export default function ModifiersScreen() {
                 <Text
                   modifiers={[
                     font({ size: 14 }),
-                    strikethrough({
-                      isActive: true,
-                      pattern: 'solid',
-                      color: 'red',
-                    }),
-                  ]}
-                >
+                    strikethrough({ isActive: true, pattern: 'solid', color: 'red' }),
+                  ]}>
                   Text 1
                 </Text>
                 <Text
                   modifiers={[
                     font({ size: 14 }),
-                    strikethrough({
-                      isActive: true,
-                      pattern: 'dot',
-                      color: 'green',
-                    }),
-                  ]}
-                >
+                    strikethrough({ isActive: true, pattern: 'dot', color: 'green' }),
+                  ]}>
                   Text 2
                 </Text>
                 <Text
                   modifiers={[
                     font({ size: 14 }),
-                    strikethrough({
-                      isActive: true,
-                      pattern: 'dash',
-                      color: 'blue',
-                    }),
-                  ]}
-                >
+                    strikethrough({ isActive: true, pattern: 'dash', color: 'blue' }),
+                  ]}>
                   Text 3
                 </Text>
                 <Text
                   modifiers={[
                     font({ size: 14 }),
                     strikethrough({ isActive: true, pattern: 'dashDot' }),
-                  ]}
-                >
+                  ]}>
                   Text 4
                 </Text>
                 <Text
                   modifiers={[
                     font({ size: 14 }),
-                    strikethrough({
-                      isActive: true,
-                      pattern: 'dashDotDot',
-                      color: 'pink',
-                    }),
-                  ]}
-                >
+                    strikethrough({ isActive: true, pattern: 'dashDotDot', color: 'pink' }),
+                  ]}>
                   Text 5
                 </Text>
               </VStack>
@@ -425,8 +360,7 @@ export default function ModifiersScreen() {
                 label="Select alignment"
                 modifiers={[pickerStyle('menu')]}
                 selection={multilineTextAlignmentIndex}
-                onSelectionChange={setMultilineTextAlignment}
-              >
+                onSelectionChange={setMultilineTextAlignment}>
                 {multilineTextAlignmentOptions.map((option, index) => (
                   <Text key={index} modifiers={[tag(index)]}>
                     {option}
@@ -437,12 +371,12 @@ export default function ModifiersScreen() {
                 modifiers={[
                   font({ size: 14 }),
                   multilineTextAlignment(
-                    multilineTextAlignmentOptions[
-                      multilineTextAlignmentIndex
-                    ] as 'center' | 'leading' | 'trailing',
+                    multilineTextAlignmentOptions[multilineTextAlignmentIndex] as
+                      | 'center'
+                      | 'leading'
+                      | 'trailing'
                   ),
-                ]}
-              >
+                ]}>
                 {`This is a block of text that shows up in a text element as multiple lines.\nHere we have chosen to center this text.`}
               </Text>
             </VStack>
@@ -455,14 +389,10 @@ export default function ModifiersScreen() {
               />
               <Text
                 modifiers={[
-                  foregroundStyle({
-                    type: 'color',
-                    color: enabledSelection ? 'black' : 'gray',
-                  }),
+                  foregroundStyle({ type: 'color', color: enabledSelection ? 'black' : 'gray' }),
                   font({ size: 14 }),
                   textSelection(enabledSelection),
-                ]}
-              >
+                ]}>
                 This is selected text
               </Text>
             </VStack>
@@ -470,14 +400,9 @@ export default function ModifiersScreen() {
             <HStack spacing={30}>
               <VStack alignment="center">
                 <Text modifiers={[font({ size: 14 })]}>Default</Text>
-                <Text
-                  modifiers={[
-                    font({ size: 12 }),
-                    frame({ width: 150, height: 120 }),
-                  ]}
-                >
-                  This is a string with default spacing between the bottom of
-                  one line and the top of the next.
+                <Text modifiers={[font({ size: 12 }), frame({ width: 150, height: 120 })]}>
+                  This is a string with default spacing between the bottom of one line and the top
+                  of the next.
                 </Text>
               </VStack>
               <VStack alignment="center">
@@ -487,20 +412,16 @@ export default function ModifiersScreen() {
                     font({ size: 12 }),
                     frame({ width: 150, height: 120 }),
                     lineSpacing(lineSpacingValue),
-                  ]}
-                >
-                  This is a string with 20 point spacing between the bottom of
-                  one line and the top of the next.
+                  ]}>
+                  This is a string with 20 point spacing between the bottom of one line and the top
+                  of the next.
                 </Text>
               </VStack>
             </HStack>
             <Slider min={0} max={20} onValueChange={setLineSpaceingValue} />
           </Section>
           {/* Modifier usingscrollContentBackground and listRowBackground */}
-          <Section
-            title="Scroll Content Background Demo"
-            modifiers={[listRowBackground(rowColor)]}
-          >
+          <Section title="Scroll Content Background Demo" modifiers={[listRowBackground(rowColor)]}>
             <Toggle
               isOn={hideScrollBackground}
               label="Hide form background"
@@ -540,15 +461,13 @@ export default function ModifiersScreen() {
                 startPoint: { x: 0, y: 0 },
                 endPoint: { x: 1, y: 1 },
               }),
-            ]}
-          >
+            ]}>
             <Text
               modifiers={[
                 foregroundStyle({ type: 'color', color: color ?? 'primary' }),
                 font({ size: 12 }),
-              ]}
-            >
-              Hello world, I do not react on foregroundStyle
+              ]}>
+              Hello world, I don't react on foregroundStyle
             </Text>
             <ColorPicker
               label="Select a color"
@@ -570,8 +489,7 @@ export default function ModifiersScreen() {
                 shadow({ radius: 4, x: 0, y: 2, color: '#FF6B6B40' }),
                 foregroundStyle({ type: 'color', color: '#FFFFFF' }),
                 onTapGesture(() => console.log('Red card tapped!')),
-              ]}
-            >
+              ]}>
               🔴 Tap me! Red card with shadow
             </Text>
 
@@ -585,12 +503,8 @@ export default function ModifiersScreen() {
                 brightness(0.1),
                 saturation(1.3),
                 border({ color: '#45B7B8', width: 1 }),
-                onLongPressGesture(
-                  () => console.log('Teal card long pressed!'),
-                  1.0,
-                ),
-              ]}
-            >
+                onLongPressGesture(() => console.log('Teal card long pressed!'), 1.0),
+              ]}>
               🌊 Long press me! Teal with effects
             </Text>
 
@@ -605,8 +519,7 @@ export default function ModifiersScreen() {
                 offset({ x: 10, y: 0 }),
                 foregroundStyle({ type: 'color', color: '#FFFFFF' }),
                 shadow({ radius: 6, x: 2, y: 3, color: '#9B59B640' }),
-              ]}
-            >
+              ]}>
               🎨 Scaled, rotated & offset purple
             </Text>
 
@@ -619,8 +532,7 @@ export default function ModifiersScreen() {
                 grayscale(1.0),
                 opacity(0.8),
                 border({ color: '#000000', width: 2 }),
-              ]}
-            >
+              ]}>
               ⚫ Grayscale orange card
             </Text>
 
@@ -632,8 +544,7 @@ export default function ModifiersScreen() {
                 padding({ vertical: 18, horizontal: 24 }),
                 colorInvert(true),
                 shadow({ radius: 8, x: 0, y: 4 }),
-              ]}
-            >
+              ]}>
               🔄 Color inverted card
             </Text>
 
@@ -645,8 +556,7 @@ export default function ModifiersScreen() {
                 clipShape('circle'),
                 foregroundStyle({ type: 'color', color: '#FFFFFF' }),
                 shadow({ radius: 10, x: 0, y: 5, color: '#1ABC9C30' }),
-              ]}
-            >
+              ]}>
               ⭕ Circular clipped text
             </Text>
 
@@ -660,10 +570,41 @@ export default function ModifiersScreen() {
                 frame({ maxWidth: 280 }),
                 foregroundStyle({ type: 'color', color: '#FFFFFF' }),
                 shadow({ radius: 3, y: 2 }),
-              ]}
-            >
+              ]}>
               📐 2:1 Aspect ratio blue card
             </Text>
+
+            {wordmarkUri && (
+              <HStack spacing={16}>
+                <VStack alignment="center" spacing={8}>
+                  <Text modifiers={[font({ size: 12 })]}>Forced 1:1</Text>
+                  <Image
+                    uiImage={wordmarkUri}
+                    modifiers={[
+                      resizable(),
+                      aspectRatio({ ratio: 1, contentMode: 'fit' }),
+                      frame({ width: 140, height: 90 }),
+                      background('#EAF4FF'),
+                      border({ color: '#3498DB', width: 1 }),
+                    ]}
+                  />
+                </VStack>
+
+                <VStack alignment="center" spacing={8}>
+                  <Text modifiers={[font({ size: 12 })]}>Intrinsic ratio</Text>
+                  <Image
+                    uiImage={wordmarkUri}
+                    modifiers={[
+                      resizable(),
+                      aspectRatio({ contentMode: 'fit' }),
+                      frame({ width: 140, height: 90 }),
+                      background('#E8F8F5'),
+                      border({ color: '#16A085', width: 1 }),
+                    ]}
+                  />
+                </VStack>
+              </HStack>
+            )}
 
             <Text
               modifiers={[
@@ -675,8 +616,7 @@ export default function ModifiersScreen() {
                 border({ color: '#D35400', width: 2 }),
                 offset({ x: 100, y: 0 }),
                 shadow({ radius: 3, y: 2 }),
-              ]}
-            >
+              ]}>
               Text should break out of the 100px frame
             </Text>
 
@@ -695,11 +635,8 @@ export default function ModifiersScreen() {
                 foregroundStyle({ type: 'color', color: '#FFFFFF' }),
                 border({ color: '#9B59B6', width: 1 }),
                 accessibilityLabel('Complex styled card with multiple effects'),
-                onTapGesture(() =>
-                  alert('Complex card with multiple modifiers tapped!'),
-                ),
-              ]}
-            >
+                onTapGesture(() => alert('Complex card with multiple modifiers tapped!')),
+              ]}>
               ✨ Complex: All effects combined!
             </Text>
 
@@ -713,8 +650,7 @@ export default function ModifiersScreen() {
                 padding({ all: 16 }),
                 shadow({ radius: 4, y: 2 }),
                 foregroundStyle({ type: 'color', color: '#FFFFFF' }),
-              ]}
-            >
+              ]}>
               🔗 Legacy props + modern modifiers
             </Text>
 
@@ -725,18 +661,12 @@ export default function ModifiersScreen() {
                 cornerRadius(10),
                 padding({ all: 14 }),
                 ...(playSounds
-                  ? [
-                      shadow({ radius: 6, y: 3, color: '#2ECC7140' }),
-                      scaleEffect(1.02),
-                    ]
+                  ? [shadow({ radius: 6, y: 3, color: '#2ECC7140' }), scaleEffect(1.02)]
                   : [grayscale(0.5), opacity(0.7)]),
                 foregroundStyle({ type: 'color', color: '#FFFFFF' }),
                 onTapGesture(() => setPlaySounds(!playSounds)),
-              ]}
-            >
-              {playSounds
-                ? '🔊 Sounds ON (tap to toggle)'
-                : '🔇 Sounds OFF (tap to toggle)'}
+              ]}>
+              {playSounds ? '🔊 Sounds ON (tap to toggle)' : '🔇 Sounds OFF (tap to toggle)'}
             </Text>
 
             {/* Disabled Modifier Demo */}
@@ -757,20 +687,13 @@ export default function ModifiersScreen() {
                   background(isDisabled ? '#BDC3C7' : '#3498DB'),
                   cornerRadius(8),
                   padding({ all: 4 }),
-                  shadow({
-                    radius: 2,
-                    y: 1,
-                    color: isDisabled ? '#BDC3C740' : '#3498DB40',
-                  }),
-                ]}
-              >
-                {['Option 1', 'Option 2', 'Option 3', 'Option 4'].map(
-                  (option, index) => (
-                    <Text key={index} modifiers={[tag(index)]}>
-                      {option}
-                    </Text>
-                  ),
-                )}
+                  shadow({ radius: 2, y: 1, color: isDisabled ? '#BDC3C740' : '#3498DB40' }),
+                ]}>
+                {['Option 1', 'Option 2', 'Option 3', 'Option 4'].map((option, index) => (
+                  <Text key={index} modifiers={[tag(index)]}>
+                    {option}
+                  </Text>
+                ))}
               </Picker>
             </VStack>
           </Section>
@@ -803,8 +726,8 @@ export default function ModifiersScreen() {
               ))}
             </HStack>
             <Stepper
-              onValueChanged={setContainerRelativeFrameCount}
-              defaultValue={containerRelativeFrameCount}
+              onValueChange={setContainerRelativeFrameCount}
+              value={containerRelativeFrameCount}
               label={`Items count: ${containerRelativeFrameCount}`}
             />
           </Section>
@@ -818,13 +741,9 @@ export default function ModifiersScreen() {
               modifiers={[
                 cornerRadius(8),
                 onTapGesture(() => {
-                  Alert.alert(
-                    'Without contentShape',
-                    'Tapped! (Only works on text)',
-                  );
+                  Alert.alert('Without contentShape', 'Tapped! (Only works on text)');
                 }),
-              ]}
-            >
+              ]}>
               <Text>Left label</Text>
               <Spacer />
               <Text>Right label</Text>
@@ -838,15 +757,11 @@ export default function ModifiersScreen() {
                 onTapGesture(() => {
                   setcontentShapeButtonCounter((prev) => {
                     const nextCount = prev + 1;
-                    Alert.alert(
-                      'With contentShape',
-                      `Works everywhere! Count: ${nextCount}`,
-                    );
+                    Alert.alert('With contentShape', `Works everywhere! Count: ${nextCount}`);
                     return nextCount;
                   });
                 }),
-              ]}
-            >
+              ]}>
               <Text>Left label</Text>
               <Spacer />
               <Text>Right label</Text>
@@ -862,8 +777,7 @@ export default function ModifiersScreen() {
                 padding({ all: 16 }),
                 background('#F8F9FA'),
                 cornerRadius(16),
-              ]}
-            >
+              ]}>
               {/* Styled HStack with modifiers */}
               <HStack
                 spacing={20}
@@ -872,22 +786,19 @@ export default function ModifiersScreen() {
                   cornerRadius(12),
                   padding({ all: 12 }),
                   shadow({ radius: 4, y: 2, color: '#667eea30' }),
-                ]}
-              >
+                ]}>
                 <Text
                   modifiers={[
                     foregroundStyle({ type: 'color', color: '#FFFFFF' }),
                     padding({ all: 8 }),
-                  ]}
-                >
+                  ]}>
                   H0V0
                 </Text>
                 <Text
                   modifiers={[
                     foregroundStyle({ type: 'color', color: '#FFFFFF' }),
                     padding({ all: 8 }),
-                  ]}
-                >
+                  ]}>
                   H1V0
                 </Text>
               </HStack>
@@ -902,20 +813,11 @@ export default function ModifiersScreen() {
                     padding({ all: 10 }),
                     scaleEffect(0.95),
                     shadow({ radius: 3, y: 1 }),
-                  ]}
-                >
-                  <Text
-                    modifiers={[
-                      foregroundStyle({ type: 'color', color: '#FFFFFF' }),
-                    ]}
-                  >
+                  ]}>
+                  <Text modifiers={[foregroundStyle({ type: 'color', color: '#FFFFFF' })]}>
                     H0V1
                   </Text>
-                  <Text
-                    modifiers={[
-                      foregroundStyle({ type: 'color', color: '#FFFFFF' }),
-                    ]}
-                  >
+                  <Text modifiers={[foregroundStyle({ type: 'color', color: '#FFFFFF' })]}>
                     H1V1
                   </Text>
                 </HStack>
@@ -929,12 +831,9 @@ export default function ModifiersScreen() {
                   cornerRadius(20),
                   padding({ all: 8 }),
                   shadow({ radius: 8, x: 0, y: 4, color: '#4facfe40' }),
-                ]}
-              >
+                ]}>
                 <View style={[styles.uiView, { width: 280, height: 80 }]}>
-                  <RNText style={styles.uiViewText}>
-                    UIView in styled HStack
-                  </RNText>
+                  <RNText style={styles.uiViewText}>UIView in styled HStack</RNText>
                 </View>
               </HStack>
 
@@ -948,8 +847,7 @@ export default function ModifiersScreen() {
                   foregroundStyle({ type: 'color', color: '#FFFFFF' }),
                   scaleEffect(1.05),
                   onTapGesture(() => alert('Layout section modifier demo!')),
-                ]}
-              >
+                ]}>
                 🚀 Tap this layout demo!
               </Text>
               <HStack
@@ -961,13 +859,8 @@ export default function ModifiersScreen() {
                       interactive: true,
                     },
                   }),
-                ]}
-              >
-                <Text
-                  modifiers={[
-                    foregroundStyle({ type: 'color', color: '#000000' }),
-                  ]}
-                >
+                ]}>
+                <Text modifiers={[foregroundStyle({ type: 'color', color: '#000000' })]}>
                   Hello world
                 </Text>
               </HStack>
@@ -989,8 +882,7 @@ function AppearSection() {
       <DisclosureGroup
         onIsExpandedChange={setDisclosureGroupExpanded}
         isExpanded={disclosureGroupExpanded}
-        label="Show rectangle"
-      >
+        label="Show rectangle">
         <Rectangle
           modifiers={[
             foregroundStyle('#9B59B6'),
