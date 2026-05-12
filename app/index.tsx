@@ -1,26 +1,29 @@
+import { useCallback } from 'react';
 import {
-  Image,
-  StyleSheet,
   Platform,
   Pressable,
+  ScrollView,
+  StyleSheet,
   TVEventControl,
+  useColorScheme,
 } from 'react-native';
-import {
-  Href,
-  Link,
-  RelativePathString,
-  useFocusEffect,
-  useRouter,
-} from 'expo-router';
+import { RelativePathString, useFocusEffect, useRouter } from 'expo-router';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-import ParallaxScrollView from '@/components/ParallaxScrollView';
+import { AnimatedIcon } from '@/components/AnimatedIcon';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { useScale } from '@/hooks/useScale';
+import { Colors } from '@/constants/Colors';
 import { screenList } from '@/constants/ScreenList';
-import { useCallback } from 'react';
+import { useScreenDimensions } from '@/hooks/useScreenDimensions';
 
 const platform = Platform.OS as string;
+
+const platformLabel = Platform.isTV
+  ? 'TV'
+  : Platform.OS === 'web'
+    ? 'web'
+    : 'mobile';
 
 export default function HomeScreen() {
   useFocusEffect(
@@ -28,72 +31,125 @@ export default function HomeScreen() {
       TVEventControl.disableTVMenuKey();
     }, []),
   );
-  const styles = useHomeScreenStyles();
+  const styles = useHomeStyles();
 
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }
-    >
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Expo UI demos</ThemedText>
-      </ThemedView>
-      {screenList.map((screen) =>
-        screen.platforms.has(platform) &&
-        !(Platform.isTV && screen.excludedOnTV) ? (
-          <ThemedView key={screen.name}>
-            <DemoButton demoName={screen.name as RelativePathString} />
-          </ThemedView>
-        ) : null,
-      )}
-    </ParallaxScrollView>
+    <ThemedView style={styles.container}>
+      <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right']}>
+        <ThemedView style={styles.heroSection}>
+          <AnimatedIcon />
+          <ThemedText type="title" style={styles.title}>
+            {`Expo UI demos`}
+          </ThemedText>
+        </ThemedView>
+
+        <ScrollView
+          style={styles.list}
+          contentContainerStyle={styles.listContent}
+          showsVerticalScrollIndicator={false}
+        >
+          {screenList.map((screen) =>
+            screen.platforms.has(platform) &&
+            !(Platform.isTV && screen.excludedOnTV) ? (
+              <DemoButton
+                key={screen.name}
+                demoName={screen.name as RelativePathString}
+              />
+            ) : null,
+          )}
+        </ScrollView>
+      </SafeAreaView>
+    </ThemedView>
   );
 }
 
 const DemoButton = function ({ demoName }: { demoName: RelativePathString }) {
   const router = useRouter();
+  const styles = useDemoButtonStyles();
+
   const navigate = (screen: RelativePathString) => {
     TVEventControl.enableTVMenuKey();
     router.push(screen);
   };
+
+  const label = demoName.replace(/Screen$/, '');
+
   return (
     <Pressable onPress={() => navigate(demoName)}>
       {({ pressed, focused }) => (
         <ThemedView
-          style={{
-            opacity: pressed || focused ? 0.6 : 1.0,
-          }}
+          style={[styles.button, (pressed || focused) && styles.buttonFocused]}
         >
-          <ThemedText type="subtitle">{demoName}</ThemedText>
+          <ThemedText
+            type="defaultSemiBold"
+            style={
+              pressed || focused ? styles.buttonTextFocused : styles.buttonText
+            }
+          >
+            {label}
+          </ThemedText>
         </ThemedView>
       )}
     </Pressable>
   );
 };
 
-const useHomeScreenStyles = function () {
-  const scale = useScale();
+const useHomeStyles = function () {
+  const { spacing, width, landscape } = useScreenDimensions();
   return StyleSheet.create({
-    titleContainer: {
-      flexDirection: 'row',
+    container: {
+      flex: 1,
+    },
+    safeArea: {
+      flex: 1,
+      paddingHorizontal: spacing.four,
+      gap: spacing.three,
+      alignSelf: 'center',
+      width: '100%',
+      maxWidth: Math.min(width, 800 + spacing.six),
+    },
+    heroSection: {
       alignItems: 'center',
-      gap: 8 * scale,
+      justifyContent: 'center',
+      paddingVertical: landscape ? spacing.two : spacing.four,
+      gap: spacing.three,
     },
-    stepContainer: {
-      gap: 8 * scale,
-      marginBottom: 8 * scale,
+    title: {
+      textAlign: 'center',
     },
-    reactLogo: {
-      height: 178 * scale,
-      width: 290 * scale,
-      bottom: 0,
-      left: 0,
-      position: 'absolute',
+    list: {
+      flex: 1,
+    },
+    listContent: {
+      gap: spacing.two,
+      paddingBottom: spacing.six,
+    },
+  });
+};
+
+const useDemoButtonStyles = function () {
+  const { spacing } = useScreenDimensions();
+  const scheme = useColorScheme() ?? 'light';
+  const baseColor =
+    scheme === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)';
+  const focusColor = Colors[scheme === 'dark' ? 'dark' : 'light'].tint;
+  const focusedTextColor =
+    Colors[scheme === 'dark' ? 'dark' : 'light'].background;
+  return StyleSheet.create({
+    button: {
+      paddingVertical: spacing.three,
+      paddingHorizontal: spacing.four,
+      borderRadius: spacing.three,
+      backgroundColor: baseColor,
+    },
+    buttonFocused: {
+      backgroundColor: focusColor,
+    },
+    buttonText: {
+      textAlign: 'left',
+    },
+    buttonTextFocused: {
+      color: focusedTextColor,
     },
   });
 };
