@@ -21,7 +21,8 @@
       "expo-font",
       "expo-build-properties",
       "expo-web-browser",
-      "expo-video"
+      "expo-video",
+      "expo-splash-screen"
     ],
     "android": {
       "splash": {
