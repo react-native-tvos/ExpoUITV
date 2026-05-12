@@ -11,9 +11,22 @@ import {
   font,
 } from '@expo/ui/swift-ui/modifiers';
 import { useState } from 'react';
+import { HWEvent, Platform, useTVEventHandler, View } from 'react-native';
 
 export default function Rotation3DEffectScreen() {
   const [flipped, setFlipped] = useState(false);
+  useTVEventHandler((event: HWEvent) => {
+    if (
+      (event.eventType === 'left' && flipped) ||
+      (event.eventType === 'right' && !flipped)
+    ) {
+      setFlipped((p) => !p);
+    }
+  });
+
+  const text = Platform.isTV
+    ? 'Use left/right arrow keys to flip'
+    : 'Tap to flip';
 
   return (
     <Host style={{ flex: 1 }}>
@@ -27,8 +40,9 @@ export default function Rotation3DEffectScreen() {
           rotation3DEffect({ angle: flipped ? 180 : 0, axis: { y: 1 } }),
           animation(Animation.spring({ duration: 0.6 }), flipped),
           onTapGesture(() => setFlipped((p) => !p)),
-        ]}>
-        <Text modifiers={[font({ size: 32, weight: 'bold' })]}>Tap to flip</Text>
+        ]}
+      >
+        <Text modifiers={[font({ size: 32, weight: 'bold' })]}>{text}</Text>
       </VStack>
     </Host>
   );

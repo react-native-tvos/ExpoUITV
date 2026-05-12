@@ -10,15 +10,38 @@ import {
   onTapGesture,
 } from '@expo/ui/swift-ui/modifiers';
 import { useId, useState } from 'react';
-import { View } from 'react-native';
+import { HWEvent, useTVEventHandler, View } from 'react-native';
 
 const boxes = ['box1', 'box2', 'box3', 'box4', 'box5', 'box6'];
-const colors = ['#FF3B30', '#007AFF', '#28CD41', '#FF9500', '#AF52DE', '#FF2D92'];
+const colors = [
+  '#FF3B30',
+  '#007AFF',
+  '#28CD41',
+  '#FF9500',
+  '#AF52DE',
+  '#FF2D92',
+];
 
 export default function MatchedGeometryEffectDemo() {
   const [selectedBox, setSelectedBox] = useState<string | null>(null);
   const namespaceId = useId();
 
+  const nextBox = (box: string | null) => {
+    let index = boxes.findIndex((s) => s === box);
+    if (index === -1) {
+      return boxes[0];
+    } else {
+      return boxes[(index + 1) % boxes.length];
+    }
+  };
+
+  useTVEventHandler((event: HWEvent) => {
+    if (event.eventType === 'right') {
+      setSelectedBox((box) => nextBox(box));
+    } else if (event.eventType === 'left') {
+      setSelectedBox(null);
+    }
+  });
   return (
     <View style={{ flex: 1, backgroundColor: 'white' }}>
       <Host style={{ flex: 1 }}>
@@ -66,7 +89,8 @@ export default function MatchedGeometryEffectDemo() {
                   modifiers={[
                     frame({ maxWidth: Infinity, maxHeight: Infinity }),
                     padding({ all: 40 }),
-                  ]}>
+                  ]}
+                >
                   <VStack>
                     {/* TODO: Add Rectangle component */}
                     {/* @ts-expect-error */}
