@@ -50,7 +50,7 @@ export const screenList: {
   { name: 'FloatingActionButtonScreen', platforms: androidOnly },
   { name: 'FormScreen', platforms: iosOnly },
   { name: 'GaugeScreen', platforms: iosOnly, excludedOnTV: true },
-  { name: 'GlassEffectScreen', platforms: allPlatforms },
+  { name: 'GlassEffectScreen', platforms: iosOnly },
   { name: 'GraphicsLayerScreen', platforms: androidOnly },
   { name: 'GridScreen', platforms: iosOnly },
   { name: 'HorizontalFloatingToolbarScreen', platforms: androidOnly },
