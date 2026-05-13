@@ -2,6 +2,8 @@
 
 https://github.com/user-attachments/assets/1bd043ab-4468-469a-8894-78223523b3ed
 
+https://github.com/user-attachments/assets/19e8e959-7fdc-4e2e-a364-93a5b46688bb
+
 This is a project demonstrating the production-ready [Expo UI](https://expo.dev/changelog/sdk-56-beta#expo-ui-is-now-ready-for-production) package available in SDK 56 and later. The project works on both TV (Apple TV, Android TV) and mobile (iOS, Android).
 
 The project also uses:
