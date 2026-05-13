@@ -1,6 +1,6 @@
-# Expo UI TV demo for SDK 54
+# Expo UI multiplatform demo
 
-This is an [Expo Router](https://docs.expo.dev/router/introduction/) SDK 54 project demonstrating the [Expo UI](https://docs.expo.dev/versions/latest/sdk/ui/) package available in SDK 54 and later. The project works on both TV (Apple TV, Android TV) and mobile (iOS, Android).
+This is a project demonstrating the production-ready [Expo UI](https://expo.dev/changelog/sdk-56-beta#expo-ui-is-now-ready-for-production) package available in SDK 56 and later. The project works on both TV (Apple TV, Android TV) and mobile (iOS, Android).
 
 The project also uses:
 
@@ -14,34 +14,24 @@ The project also uses:
 - TV builds:
 
 ```sh
-yarn
-yarn prebuild:tv # Executes Expo prebuild with TV modifications
-yarn ios # Build and run for Apple TV
-yarn android # Build and run for Android TV
+pnpm install
+pnpm prebuild:tv # Executes Expo prebuild with TV modifications
+pnpm ios # Build and run for Apple TV
+pnpm android # Build and run for Android TV
 ```
 
 - Mobile builds:
 
 ```sh
-yarn
-yarn prebuild # Executes Expo prebuild without TV modifications
-yarn ios # Build and run for iOS
-yarn android # Build and run for Android mobile
+pnpm install
+pnpm prebuild # Executes Expo prebuild without TV modifications
+pnpm ios # Build and run for iOS
+pnpm android # Build and run for Android mobile
 ```
 
 ## Development
 
 You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
 
 ## Learn more
 
