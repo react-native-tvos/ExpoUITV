@@ -9,7 +9,7 @@ export const screenList: {
   platforms: Set<String>;
   excludedOnTV?: boolean;
 }[] = [
-  { name: 'AlertDialogScreen', platforms: androidOnly },
+  { name: 'AlertDialogScreen', platforms: allPlatforms },
   { name: 'AnimatedVisibilityScreen', platforms: androidOnly },
   { name: 'AnimationModifierScreen', platforms: iosOnly },
   { name: 'BadgeScreen', platforms: androidOnly },
@@ -33,6 +33,11 @@ export const screenList: {
     excludedOnTV: true,
   },
   { name: 'CommunityMaskedViewScreen', platforms: allPlatforms },
+  {
+    name: 'CommunityMenuScreen',
+    platforms: allPlatforms,
+    excludedOnTV: true,
+  },
   {
     name: 'CommunityPickerScreen',
     platforms: allPlatforms,
@@ -86,7 +91,9 @@ export const screenList: {
   { name: 'SliderScreen', platforms: allPlatforms, excludedOnTV: true },
   { name: 'StepperScreen', platforms: iosOnly, excludedOnTV: true },
   { name: 'SurfaceScreen', platforms: androidOnly },
+  { name: 'SwipeActionsScreen', platforms: iosOnly },
   { name: 'SwitchScreen', platforms: androidOnly },
+  { name: 'SymbolEffectScreen', platforms: iosOnly },
   { name: 'SyncSwitchScreen', platforms: androidOnly },
   { name: 'TabViewScreen', platforms: iosOnly },
   { name: 'TextFieldScreen', platforms: allPlatforms, excludedOnTV: true },
