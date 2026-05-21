@@ -10,7 +10,7 @@
     "web": "expo start --web",
     "reset-project": "./scripts/reset-project.js",
     "lint": "expo lint",
-    "prebuild:tv": "EXPO_USE_PRECOMPILED_MODULES=0 EXPO_TV=1 expo prebuild --clean",
+    "prebuild:tv": "EXPO_TV=1 expo prebuild --clean",
     "prebuild": "expo prebuild --clean",
     "deploy": "npx expo export -p web && npx eas-cli@latest deploy"
   },
