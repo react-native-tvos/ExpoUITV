@@ -1,6 +1,6 @@
 {
   "expo": {
-    "scheme": "routertv",
+    "scheme": "expouitv",
     "plugins": [
       [
         "@react-native-tvos/config-tv",
@@ -22,20 +22,19 @@
       "expo-build-properties",
       "expo-web-browser",
       "expo-video",
-      "expo-splash-screen"
+      "expo-splash-screen",
+      "expo-image"
     ],
     "android": {
       "splash": {
         "image": "./assets/images/splash.png"
-      },
-      "package": "com.douglowderexpo.ExpoUITV"
+      }
     },
     "ios": {
       "supportsTablet": true,
       "splash": {
         "image": "./assets/images/splash.png"
-      },
-      "bundleIdentifier": "com.douglowderexpo.ExpoUITV"
+      }
     },
     "web": {
       "bundler": "metro",
